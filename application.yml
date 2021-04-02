@@ -1,0 +1,17 @@
+spring:
+  redis:
+    database: 1
+    host: localhost
+    password: 123456
+    port: 6379
+    timeout: 10000
+
+redis:
+  maxIdle: 300
+  maxTotal: 1000
+  maxWaitMillis: 10000
+  minEvictableIdleTimeMillis: 300000
+  numTestsPerEvictionRun: 1024
+  testOnBorrow: true
+  testWhileIdle: true
+  timeBetweenEvictionRunsMillis: 30000
