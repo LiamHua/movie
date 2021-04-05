@@ -13,9 +13,9 @@ spring:
     name: spider
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    password: movie
-    url: jdbc:mysql://mysql.huazai.vip/movie?allowMultiQueries=true
-    username: movie
+    username: root
+    password: password
+    url: jdbc:mysql://localhost:3306/movie?allowMultiQueries=true
 
 pagehelper:
   helper-dialect: mysql
