@@ -55,6 +55,15 @@ public class BaseUtil {
     }
 
     /**
+     * 判断list是否为空
+     * @param list
+     * @return
+     */
+    public static Boolean isEmptyList(List<?> list){
+        return null == list || 0 == list.size();
+    }
+
+    /**
      * 判断多个参数是否为空
      * @param object
      * @return
