@@ -80,7 +80,7 @@ public class QuartzConfig {
         SimpleTriggerFactoryBean trigger = new SimpleTriggerFactoryBean();
         trigger.setJobDetail(solveDataJobDetail);
         // 设置任务启动延迟
-        trigger.setStartDelay(0);  
+        trigger.setStartDelay(0);
         // 设置定时任务启动时间
         trigger.setStartTime(new Date());
         // 每2小时执行一次

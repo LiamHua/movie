@@ -231,6 +231,7 @@ public class SpiderService {
         //电影详情页面界面
         String infoHtml = this.getHtml(infoLink);
 //        System.out.println(infoHtml);
+        String decadeReg = "<span class=\"year\">((.+?))</span>";
         String nameReg = "<span property=\"v:itemreviewed\">(.+?)</span>";
         String translatedTermReg = "又名:</span>(.+?)<br/>";
         String infoReg = "<span property=\"v:summary\".*?>(.+?)</span>";
@@ -243,6 +244,7 @@ public class SpiderService {
         String directorReg = "<a href=\"/celebrity/(\\d+)/\" rel=\"v:directedBy\">(.+?)</a>";
         String scriptwriterReg = "<a href=\"/celebrity/(\\d+)/\">(.+?)</a>";
         this.coverParameter(infoHtml,param);
+        this.setParameter(decadeReg,"decade",infoHtml,param);
         this.setParameter(nameReg,"name",infoHtml,param);
         this.setParameter(translatedTermReg,"translated_term",infoHtml,param);
         this.setParameter(infoReg,"info",infoHtml,param);

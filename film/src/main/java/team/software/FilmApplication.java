@@ -17,9 +17,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @MapperScan(value = "team.software.mapper")
 @EnableCaching
 @EnableTransactionManagement
-@EnableAspectJAutoProxy(exposeProxy = true)
 public class FilmApplication {
     public static void main(String[] args) {
-        SpringApplication.run(SpringApplication.class,args);
+        SpringApplication.run(FilmApplication.class,args);
     }
 }

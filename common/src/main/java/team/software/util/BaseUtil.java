@@ -60,7 +60,7 @@ public class BaseUtil {
      * @return
      */
     public static Boolean isEmptyList(List<?> list){
-        return null == list || 0 == list.size();
+        return null == list || list.isEmpty();
     }
 
     /**
