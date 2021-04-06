@@ -40,13 +40,13 @@ public class FilmService {
             searchParam.put("genres",genres);
         }
         //地区
-        String area = param.get("area");
+        String area = param.get("areas");
         if (!BaseUtil.isEmpty(area)){
             List<String> areas = Arrays.asList(area.split(","));
             searchParam.put("areas",areas);
         }
         //标签
-        String tag = param.get("tag");
+        String tag = param.get("tags");
         if (!BaseUtil.isEmpty(tag)){
             List<String> tags = Arrays.asList(area.split(","));
             searchParam.put("tags",tags);
@@ -54,7 +54,7 @@ public class FilmService {
         //年代
         String decade = param.get("decade");
         if (!BaseUtil.isEmpty(decade)){
-            param.put("decade",decade);
+            searchParam.put("decade",decade);
         }
         //顺序 例: 热度最高，评分最高，最多收藏，最近上映
         String sort = "";

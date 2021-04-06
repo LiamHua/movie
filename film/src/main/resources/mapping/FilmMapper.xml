@@ -29,21 +29,23 @@
             LEFT JOIN film_area ON film_area.film_id = film.id
             LEFT JOIN film_tag ON film_tag.film_id = film.id
             LEFT JOIN film_director ON film_director.film_id = film.id
+            LEFT JOIN html ON html.id = film.html_id
         WHERE
             1 = 1
-            <if test="genres != null and genres.isEmpty()">
+            AND html.state = 1
+            <if test="genres != null and !genres.isEmpty()">
                 AND film_category.category_id IN
                 <foreach collection="genres" open="(" close=")" index="index" item="item" separator=",">
                     #{item}
                 </foreach>
             </if>
-            <if test="areas != null and areas.isEmpty()">
+            <if test="areas != null and !areas.isEmpty()">
                 AND film_area.area_id IN
                 <foreach collection="areas" open="(" close=")" index="index" item="item" separator=",">
                     #{item}
                 </foreach>
             </if>
-            <if test="tags != null and tags.isEmpty()">
+            <if test="tags != null and !tags.isEmpty()">
                 AND film_tag.tag_id IN
                 <foreach collection="tags" open="(" close=")" index="index" item="item" separator=",">
                     #{item}

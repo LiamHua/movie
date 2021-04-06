@@ -3,11 +3,11 @@ logging:
     team:
       software:
         mapper: debug
-mybatis:
+mybatis-plus:
   mapper-locations: classpath:mapping/*.xml
   type-aliases-package: team.software.bean
 server:
-  port: 8085
+  port: 8083
 spring:
   application:
     name: spider
