@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="team.software.mapper.SpiderMapper">
+    <select id="queryUnSolveHtml" resultType="team.software.bean.HtmlBean">
+        SELECT
+            html.id,
+            html.url
+        FROM
+            html
+        WHERE
+            html.state = 0
+            LIMIT 80
+    </select>
+
+    <select id="queryLastUrl" resultType="string">
+        SELECT
+            html.url
+        FROM
+            html
+            ORDER BY html.url DESC
+            LIMIT 1
+    </select>
+
+    <insert id="addHtml" parameterType="list">
+        INSERT INTO
+            html(url,state,create_time)
+        VALUES
+            <foreach collection="list" index="index" item="bean" separator=",">
+                (#{bean.url},#{bean.state},#{bean.create_time})
+            </foreach>
+    </insert>
+
+    <select id="queryCategoryByName" parameterType="list" resultType="team.software.bean.CategoryBean">
+        SELECT
+            category.id,
+            category.name
+        FROM
+            category
+        WHERE
+            category.name IN (
+            <foreach collection="list" index="index" item="bean" separator=",">
+                #{bean.name}
+            </foreach> )
+    </select>
+
+    <select id="queryAreaByName" parameterType="list" resultType="team.software.bean.AreaBean">
+        SELECT
+            area.id,
+            area.name
+        FROM
+            area
+        WHERE
+            area.name IN (
+            <foreach collection="list" index="index" item="bean" separator=",">
+                #{bean.name}
+            </foreach> )
+    </select>
+
+    <select id="queryTagByName" parameterType="list" resultType="team.software.bean.TagBean">
+        SELECT
+            tag.id,
+            tag.name
+        FROM
+            tag
+        WHERE
+            tag.name IN (
+            <foreach collection="list" index="index" item="bean" separator=",">
+                #{bean.name}
+            </foreach> )
+    </select>
+
+    <select id="queryStarByName" parameterType="list" resultType="team.software.bean.StarBean">
+        SELECT
+            star.id,
+            star.CN_name,
+            star.EN_name,
+            star.douban_id
+        FROM
+            star
+        WHERE
+            star.douban_id IN (
+            <foreach collection="list" index="index" item="bean" separator=",">
+                #{bean.douban_id}
+            </foreach> )
+    </select>
+
+    <select id="queryAwardByName" parameterType="list" resultType="team.software.bean.AwardBean">
+        SELECT
+            award.id,
+            award.name
+        FROM
+            award
+        WHERE
+            award.name IN (
+            <foreach collection="list" index="index" item="bean" separator=",">
+                #{bean.name}
+            </foreach> )
+    </select>
+
+    <insert id="addCategory" parameterType="list">
+        INSERT INTO
+            category(name)
+        VALUES
+            <foreach collection="list" index="index" item="bean" separator=",">
+                (#{bean.name})
+            </foreach>
+    </insert>
+
+    <insert id="addArea" parameterType="list">
+        INSERT INTO
+            area(name)
+        VALUES
+            <foreach collection="list" index="index" item="bean" separator=",">
+                (#{bean.name})
+            </foreach>
+    </insert>
+
+    <insert id="addTag" parameterType="list">
+        INSERT INTO
+            tag(name)
+        VALUES
+            <foreach collection="list" index="index" item="bean" separator=",">
+                (#{bean.name})
+            </foreach>
+    </insert>
+
+    <insert id="addStar" parameterType="list">
+        INSERT INTO
+            star(CN_name,EN_name,douban_id)
+        VALUES
+            <foreach collection="list" index="index" item="bean" separator=",">
+                (#{bean.CN_name},#{bean.EN_name},#{bean.douban_id})
+            </foreach>
+    </insert>
+
+    <insert id="addAward" parameterType="list">
+        INSERT INTO
+            award(name)
+        VALUES
+            <foreach collection="list" index="index" item="bean" separator=",">
+                (#{bean.name})
+            </foreach>
+    </insert>
+
+    <select id="queryFilmId" parameterType="string" resultType="string">
+        SELECT
+            film.id
+        FROM
+            film
+        WHERE
+            film.html_id = #{html_id}
+    </select>
+
+    <insert id="addFilm" parameterType="map">
+        INSERT INTO
+            film(html_id,translated_term,name,cover,decade,language,subtitle,release_time,douban,length,info,link,upload_time,hot,collect)
+        VALUES (#{html_id},#{translated_term},#{name},#{cover},#{decade},#{language},#{subtitle},#{release_time},#{douban},#{length},#{info},#{link},#{upload_time},#{hot},#{collect})
+    </insert>
+
+    <insert id="solveCategory" parameterType="map">
+        INSERT INTO
+            film_category(film_id,category_id)
+        VALUES
+            <foreach collection="categoryList" index="index" item="item" separator=",">
+                (#{film_id},#{item})
+            </foreach>
+    </insert>
+
+    <insert id="solveArea" parameterType="map">
+        INSERT INTO
+            film_area(film_id,area_id)
+        VALUES
+            <foreach collection="areaList" index="index" item="item" separator=",">
+                (#{film_id},#{item})
+            </foreach>
+    </insert>
+
+    <insert id="solveTag" parameterType="map">
+        INSERT INTO
+            film_tag(film_id,tag_id)
+        VALUES
+            <foreach collection="tagList" index="index" item="item" separator=",">
+                (#{film_id},#{item})
+            </foreach>
+    </insert>
+
+    <insert id="solveDirector" parameterType="map">
+        INSERT INTO
+            film_director(film_id,star_id)
+        VALUES
+            <foreach collection="directorList" index="index" item="item" separator=",">
+                (#{film_id},#{item})
+            </foreach>
+    </insert>
+
+    <insert id="solveScriptwriter" parameterType="map">
+        INSERT INTO
+            film_scriptwriter(film_id,star_id)
+        VALUES
+            <foreach collection="scriptwriterList" index="index" item="item" separator=",">
+                (#{film_id},#{item})
+            </foreach>
+    </insert>
+
+    <insert id="solveStarring" parameterType="map">
+        INSERT INTO
+            film_star(film_id,star_id)
+        VALUES
+            <foreach collection="starringList" index="index" item="item" separator=",">
+                (#{film_id},#{item})
+            </foreach>
+    </insert>
+
+    <insert id="solveAward" parameterType="map">
+        INSERT INTO
+            film_award(film_id,award_id,award_content)
+        VALUES
+            <foreach collection="awardList" index="index" item="bean" separator=",">
+                (#{film_id},#{bean.award_id},#{bean.award_content})
+            </foreach>
+    </insert>
+
+    <update id="setHtmlState" parameterType="list">
+        UPDATE
+            html
+        SET
+            html.state = 1
+        WHERE
+            html.id IN (
+            <foreach collection="list" index="index" item="item" separator=",">
+                #{item}
+            </foreach> )
+    </update>
+
+    <update id="setHtmlStarErrorState" parameterType="list">
+        UPDATE
+            html
+        SET
+            html.state = 5
+        WHERE
+            html.id IN (
+            <foreach collection="list" index="index" item="item" separator=",">
+                #{item}
+            </foreach> )
+    </update>
+
+</mapper>

@@ -1,0 +1,37 @@
+logging:
+  level:
+    team:
+      software:
+        mapper: debug
+mybatis:
+  mapper-locations: classpath:mapping/*.xml
+  type-aliases-package: team.software.bean
+server:
+  port: 8082
+spring:
+  application:
+    name: spider
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: password
+    url: jdbc:mysql://localhost:3306/movie?allowMultiQueries=true
+
+pagehelper:
+  helper-dialect: mysql
+  page-size-zero: false
+  reasonable: true
+  support-methods-arguments: true
+
+
+
+
+
+
+
+
+
+
+
+
+
