@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="team.chenxin.dao.CollectionMapper">
-    <resultMap id="BaseResultMap" type="team.chenxin.bean.Collect">
-        <id column="id" jdbcType="int" property="id"/>
-        <result column="film_id" jdbcType="int" property="film_id"/>
-        <result column="favorite_id" jdbcType="int" property="favorite_id"/>
-        <result column="collect_time" jdbcType="int" property="collect_time"/>
-    </resultMap>
-
-    <select id="getCollections" resultMap="BaseResultMap">
+    <select id="getColletionsByFaid" resultType="team.chenxin.bean.Collect">
         select *
         from collect
+        where favorite_id=#{fa_id}
         order by id asc
     </select>
+
+    <insert id="addCollection" keyColumn="id" keyProperty="id">
+        insert into `collect` (film_id,favorite_id,collect_time)
+        values (#{fa_id},#{favorite_id},)
+        where
+    </insert>
 </mapper>

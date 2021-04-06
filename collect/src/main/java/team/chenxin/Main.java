@@ -1,5 +1,6 @@
 package team.chenxin;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,7 +15,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @PROJECT_NAME: movie
  **/
 @SpringBootApplication
-@MapperScan(basePackages = {"team.chenxin.dao"})
+@MapperScan("team.chenxin.dao")
 public class Main {
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);

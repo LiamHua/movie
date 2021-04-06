@@ -20,6 +20,7 @@ import java.util.List;
 @Service
 public class CollectServiceImpl implements CollectService {
 
+    @Autowired
     private CollectionMapper collectionMapper;
 
     @Override
@@ -28,22 +29,23 @@ public class CollectServiceImpl implements CollectService {
     }
 
     @Override
-    public void addCollection(int fa_id) {
-
+    public void addCollection(int fa_id, int film_id, int collect_time) {
+        collectionMapper.addCollection(fa_id,film_id,collect_time);
     }
 
     @Override
-    public void copyCollection(int film_id, int fa_id) {
-
+    public void copyCollection(int fa_id, int film_id) {
+        collectionMapper.copyCollection(fa_id,film_id);
     }
 
     @Override
-    public void deleteCollection(int film_id) {
-
+    public void deleteCollection(int fa_id, int film_id) {
+        collectionMapper.deleteCollection(fa_id,film_id);
     }
 
     @Override
-    public void moveCollection(int fa_id) {
-
+    public void moveCollection(int fa_id, int film_id) {
+        collectionMapper.moveCollection(fa_id, film_id);
     }
+
 }

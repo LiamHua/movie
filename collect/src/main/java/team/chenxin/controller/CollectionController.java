@@ -25,34 +25,42 @@ public class CollectionController {
     private CollectService collectService;
 
     @GetMapping("/getCollection/{favorite_id}")
-    public ResponseEntity<List<Collect>> getColletionsByFaid(@PathVariable("favrite_id")int f_id)
+    public ResponseEntity<List<Collect>> getColletionsByFaid(@PathVariable int favorite_id)
     {
-        List<Collect> collects=collectService.getColletionsByFaid(f_id);
+        List<Collect> collects=collectService.getColletionsByFaid(favorite_id);
         return ResponseEntity.ok(collects);
     }
 
-    @PostMapping("/addCollection/{favorite_id}")
-    public ResponseEntity<Void> addCollection(@PathVariable("favoriteid_id")int id)
+    @PostMapping("/addCollection")
+    public ResponseEntity<Void> addCollection(@RequestParam("favoriteid_id")int fa_id,
+                                              @RequestParam("film_id")int film_id)
     {
+
+        collectService.addCollection(fa_id,film_id,);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/copyCollection")
-    public ResponseEntity<Void> copyCollection(@RequestParam("film_id")int film_id,
-                                 @RequestParam("favorite_id")int favorit_id)
+    public ResponseEntity<Void> copyCollection(@RequestParam("favoriteid_id")int fa_id,
+                                               @RequestParam("film_id")int film_id)
     {
+        collectService.copyCollection(fa_id,film_id);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/deleteCollecticon/{film_id}")
-    public ResponseEntity<Void> deleteCollection(@PathVariable("film_id")int film_id)
+    @PostMapping("/deleteCollection")
+    public ResponseEntity<Void> deleteCollection(@RequestParam("favoriteid_id")int fa_id,
+                                                 @RequestParam("film_id")int film_id)
     {
+        collectService.deleteCollection(fa_id,film_id);
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/moveCollection/{favorite_id}")
-    public ResponseEntity<Void> moveCollection(@PathVariable("favorite_id")int film_id)
+    @PostMapping("/moveCollection/{favorite_id}")
+    public ResponseEntity<Void> moveCollection(@RequestParam("favorite_id")int fa_id,
+                                               @RequestParam("film_id")int film_id)
     {
+        collectService.moveCollection(fa_id,film_id);
         return ResponseEntity.ok().build();
     }
 }
