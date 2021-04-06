@@ -11,7 +11,7 @@
 
     <insert id="addCollection" keyColumn="id" keyProperty="id">
         insert into `collect` (film_id,favorite_id,collect_time)
-        values (#{fa_id},#{favorite_id},)
-        where
+        values (#{film_id},#{fa_id},#{collect_time})
     </insert>
+
 </mapper>

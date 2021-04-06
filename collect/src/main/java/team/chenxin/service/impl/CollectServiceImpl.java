@@ -29,7 +29,7 @@ public class CollectServiceImpl implements CollectService {
     }
 
     @Override
-    public void addCollection(int fa_id, int film_id, int collect_time) {
+    public void addCollection(int fa_id, int film_id, String collect_time) {
         collectionMapper.addCollection(fa_id,film_id,collect_time);
     }
 

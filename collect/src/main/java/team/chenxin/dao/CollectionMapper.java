@@ -24,7 +24,7 @@ public interface CollectionMapper {
 
     void addCollection(@Param("fa_id") int fa_id,
                        @Param("film_id") int film_id,
-                       @Param("collect_time")int collect_time);
+                       @Param("collect_time")String collect_time);
 
     void copyCollection(@Param("fa_id") int fa_id,
                         @Param("film_id") int film_id);
