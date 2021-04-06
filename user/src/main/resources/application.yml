@@ -1,0 +1,18 @@
+logging:
+  level:
+    team:
+      software:
+        mapper: debug
+#mybatis:
+#  mapper-locations: classpath:mapping/*.xml
+#  type-aliases-package: team.software.bean
+server:
+  port: 8083
+spring:
+  application:
+    name: spider
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: movie
+    password: movie
+    url: jdbc:mysql://mysql.huazai.vip:3306/movie?allowMultiQueries=true
