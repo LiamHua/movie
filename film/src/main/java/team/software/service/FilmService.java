@@ -45,25 +45,41 @@ public class FilmService {
             List<String> areas = Arrays.asList(area.split(","));
             searchParam.put("areas",areas);
         }
-        //年代
-        String decade = param.get("decade");
-        if (!BaseUtil.isEmpty(decade)){
-            param.put("decade",decade);
-        }
         //标签
         String tag = param.get("tag");
         if (!BaseUtil.isEmpty(tag)){
             List<String> tags = Arrays.asList(area.split(","));
             searchParam.put("tags",tags);
         }
-        Map<String,String> orders = new HashMap<>();
+        //年代
+        String decade = param.get("decade");
+        if (!BaseUtil.isEmpty(decade)){
+            param.put("decade",decade);
+        }
+        //顺序 例: 热度最高，评分最高，最多收藏，最近上映
+        String sort = "";
+        if (!BaseUtil.isEmpty(param.get("hot"))){
+            sort = "hot";
+        }else if (!BaseUtil.isEmpty(param.get("douban"))){
+            sort = "douban";
+        }else if (!BaseUtil.isEmpty(param.get("collect"))){
+            sort = "collect";
+        }else if (!BaseUtil.isEmpty(param.get("releaseDate"))){
+            sort = "release_time";
+        }
+        searchParam.put("sort",sort);
         return searchParam;
     }
 
-    public ResultMap movieSearch(Map<String,Object> param){
-        Map<String,Object> search = param.get("search")
+    /**
+     * 挑选影片功能
+     * @param param 参数
+     * @return 结果集
+     */
+    public ResultMap movieSearch(Map<String,String> param){
+        Map<String,Object> search = solveSearchParam(param);
         ResultMap resultMap = new ResultMap();
-        String page = (String) param.get("page");
+        String page = param.get("page");
         //默认第一页
         Integer pno = 1;
         if (!BaseUtil.isEmpty(page)){
@@ -72,10 +88,27 @@ public class FilmService {
         //每页的数据条数
         Integer pageSize = 20;
         PageHelper.startPage(pno,pageSize);
-        List<FilmBean> list = this.filmMapper.queryFilm(param);
+        List<FilmBean> list = this.filmMapper.queryFilm(search);
         PageInfo<FilmBean> pageInfo = new PageInfo<>(list);
-
-
+        list = pageInfo.getList();
+        for (FilmBean bean : list){
+            String directors = bean.getDirectors();
+            String casts = bean.getCasts();
+            if (!BaseUtil.isEmpty(directors)){
+                bean.setDirectors(directors.replaceAll(",","/"));
+            }
+            if (!BaseUtil.isEmpty(casts)) {
+                bean.setCasts(casts.replaceAll(",", "/"));
+            }
+        }
+        Map<String,Object> dataMap = new HashMap<>();
+        dataMap.put("data",list);
+        dataMap.put("count", pageInfo.getTotal());
+        dataMap.put("nowPage", pageInfo.getPageNum());
+        dataMap.put("totalPages",pageInfo.getPages());
+        resultMap.setCode("200");
+        resultMap.setMsg("请求成功");
+        resultMap.setData(dataMap);
         return resultMap;
     }
 }
