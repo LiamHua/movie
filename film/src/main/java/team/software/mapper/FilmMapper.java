@@ -2,6 +2,8 @@ package team.software.mapper;
 
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * @author huao
  * @ClassName FilmMapper.java
@@ -10,4 +12,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository(value = "team.software.mapper.FilmMapper")
 public interface FilmMapper {
+
 }
