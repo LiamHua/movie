@@ -1,0 +1,46 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/movie?allowMultiQueries=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8&nullCatalogMeansCurrent=true
+    username: root
+    password: Cx1449850165.
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      minimum-idle: 0
+      maximum-pool-size: 20
+      idle-timeout: 10000
+      connection-test-query: select 1
+
+  redis:
+    database: 1
+    host: localhost
+    password: 123456
+    port: 6379
+    timeout: 10000
+
+#redis:
+#  maxIdle: 300
+#  maxTotal: 1000
+#  maxWaitMillis: 10000
+#  minEvictableIdleTimeMillis: 300000
+#  numTestsPerEvictionRun: 1024
+#  testOnBorrow: true
+#  testWhileIdle: true
+#  timeBetweenEvictionRunsMillis: 30000
+
+mybatis:
+  #Mybatis Mapper对应的xml文件位置
+  type-aliases-package: team.chenxin.bean
+  mapper-locations: classpath*:mapper/*.xml
+#  global-config:
+#    #关闭mp3.0自带的banner
+#    banner: false
+#    db-config:
+#      # 主键类型 0:数据库ID自增 1.未定义 2.用户输入 3 id_worker 4.uuid 5.id_worker字符串表示
+#      id-type: AUTO
+#      #字段策略 0:"忽略判断",1:"非 NULL 判断"),2:"非空判断"
+#      field-strategy: NOT_NULL
+#      # 默认数据库表下划线命名
+#      table-underline: true

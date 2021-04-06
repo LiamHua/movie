@@ -4,12 +4,5 @@
     <file url="file://$PROJECT_DIR$/collect/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/collect/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/common/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/common/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/film/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/film/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/spider/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/spider/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/user/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/user/src/main/resources" charset="UTF-8" />
   </component>
 </project>
