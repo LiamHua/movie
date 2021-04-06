@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team.chenxin.bean.Collect;
 import team.chenxin.service.CollectService;
+import team.chenxin.utils.TimeUtil;
 
 import java.util.List;
 
@@ -25,23 +26,23 @@ public class CollectionController {
     private CollectService collectService;
 
     @GetMapping("/getCollection/{favorite_id}")
-    public ResponseEntity<List<Collect>> getColletionsByFaid(@PathVariable int favorite_id)
+    public ResponseEntity<List<Collect>> getColletionsByFaid(@PathVariable(value = "favorite_id") int favorite_id)
     {
         List<Collect> collects=collectService.getColletionsByFaid(favorite_id);
         return ResponseEntity.ok(collects);
     }
 
     @PostMapping("/addCollection")
-    public ResponseEntity<Void> addCollection(@RequestParam("favoriteid_id")int fa_id,
-                                              @RequestParam("film_id")int film_id)
+    public ResponseEntity<Void> addCollection(@RequestParam(value = "favorite_id")int fa_id,
+                                              @RequestParam(value = "film_id")int film_id)
     {
 
-        collectService.addCollection(fa_id,film_id,);
+        collectService.addCollection(fa_id,film_id,TimeUtil.getTimeNow());
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/copyCollection")
-    public ResponseEntity<Void> copyCollection(@RequestParam("favoriteid_id")int fa_id,
+    public ResponseEntity<Void> copyCollection(@RequestParam("favorite_id")int fa_id,
                                                @RequestParam("film_id")int film_id)
     {
         collectService.copyCollection(fa_id,film_id);
@@ -49,7 +50,7 @@ public class CollectionController {
     }
 
     @PostMapping("/deleteCollection")
-    public ResponseEntity<Void> deleteCollection(@RequestParam("favoriteid_id")int fa_id,
+    public ResponseEntity<Void> deleteCollection(@RequestParam("favorite_id")int fa_id,
                                                  @RequestParam("film_id")int film_id)
     {
         collectService.deleteCollection(fa_id,film_id);
