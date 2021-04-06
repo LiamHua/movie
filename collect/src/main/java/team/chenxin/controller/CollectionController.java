@@ -26,7 +26,7 @@ public class CollectionController {
     private CollectService collectService;
 
     @GetMapping("/getCollection/{favorite_id}")
-    public ResponseEntity<List<Collect>> getColletionsByFaid(@PathVariable int favorite_id)
+    public ResponseEntity<List<Collect>> getColletionsByFaid(@PathVariable(value = "favorite_id") int favorite_id)
     {
         List<Collect> collects=collectService.getColletionsByFaid(favorite_id);
         return ResponseEntity.ok(collects);
@@ -37,7 +37,7 @@ public class CollectionController {
                                               @RequestParam(value = "film_id")int film_id)
     {
 
-        collectService.addCollection(fa_id,film_id, TimeUtil.getTimeNow());
+        collectService.addCollection(fa_id,film_id,TimeUtil.getTimeNow());
         return ResponseEntity.ok().build();
     }
 
