@@ -15,9 +15,10 @@ import java.util.List;
  **/
 public interface CollectService {
 
-    List<Collect> getColletionsByFaid(int fa_id);
-    void addCollection(int fa_id,int film_id,String collect_time);
-    void copyCollection(int fa_id,int film_id);
-    void deleteCollection(int fa_id,int film_id);
-    void moveCollection(int fa_id,int film_id);
+    List<Collect> getColletionsByFaid(long fa_id);
+    boolean getCollectionByFaiIddFilmId(long fa_id, int film_id);
+    void addCollection(long fa_id,int film_id,String collect_time);
+    void copyCollection(long fa_id,int film_id,String collect_time);
+    void deleteCollection(long fa_id,int film_id);
+    void moveCollection(long fa_id,int film_id);
 }
