@@ -40,6 +40,11 @@ public class TUser implements Serializable {
     private String nickname;
 
     /**
+     * 用户密码
+     */
+    private String password;
+
+    /**
      * 用户头像
      */
     private String head;
@@ -72,6 +77,5 @@ public class TUser implements Serializable {
     /**
      * 用户状态
      */
-    private String state;
-
+    private int state;
 }

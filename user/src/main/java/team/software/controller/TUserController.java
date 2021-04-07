@@ -1,9 +1,10 @@
 package team.software.controller;
 
-import lombok.RequiredArgsConstructor;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import team.software.bean.UserCode;
 import team.software.bean.TUser;
 import team.software.service.TUserService;
 
@@ -12,10 +13,13 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.api.R;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import team.software.util.BaseUtil;
+import team.software.util.JwtUtil;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,13 +32,14 @@ import java.util.Map;
 @RestController
 @RequestMapping("/user")
 @Slf4j
-@RequiredArgsConstructor
 public class TUserController {
 
     /**
      * 服务对象
      */
-    TUserService tUserService;
+    @Autowired
+    @Qualifier("TUserServiceImpl")
+    private TUserService tUserServiceImpl;
 
     /**
      * 分页查询所有数据
@@ -45,45 +50,135 @@ public class TUserController {
      */
     @GetMapping
     public R<IPage<TUser>> selectAll(Page<TUser> page, TUser tUser) {
-        return R.ok(tUserService.page(page, new QueryWrapper<>(tUser)));
+        return R.ok(tUserServiceImpl.page(page, new QueryWrapper<>(tUser)));
     }
 
     /**
-     * 通过主键查询单条数据
+     * 用户登陆
      *
-     * @param id 主键
+     * @param tUser 用户名及密码
      * @return 单条数据
      */
-    @GetMapping("/get/{id}")
-    public R<TUser> selectOne(@PathVariable Serializable id) {
-        return R.ok(tUserService.getById(id));
+    @RequestMapping("/login")
+    public R<HashMap<String, Object>> selectOne(@RequestParam Map<String, String> tUser) {
+        log.info("用户正在登陆" + tUser.toString());
+        String username = tUser.get("username").trim();
+        String password = tUser.get("password").trim();
+        // 用户名格式错误
+        if (username.length() == 0 || username.length() > 20) {
+            log.info("用户名格式错误!");
+            return R.restResult(null,UserCode.USERNAME_PATTERN_ERROR);
+        }
+        // 密码格式错误
+        if (password.length() < 8 || password.length() > 20) {
+            log.info("密码格式错误!");
+            return R.restResult(null, UserCode.PASSWORD_PATTERN_ERROR);
+        }
+        TUser user = tUserServiceImpl.getOne(Wrappers.<TUser>lambdaQuery().eq(TUser::getUsername, username));
+        if (user != null) {
+            if (!user.getPassword().equals(password)) {
+                // 密码错误
+                log.info("用户密码错误!");
+                return R.failed(UserCode.PASSWORD_ERROR);
+            } else if (user.getState() != 1) {
+                log.info("用户状态异常！");
+                return R.failed(UserCode.USER_STATE_ERROR);
+            } else {
+                // 登陆成功
+                log.info(username + "用户登陆成功！");
+                HashMap<String, Object>  userSubject = new HashMap<>();
+                userSubject.put("id", user.getId());
+                userSubject.put("username", user.getUsername());
+                userSubject.put("nickname", user.getNickname());
+                userSubject.put("head", user.getHead());
+                userSubject.put("sex", user.getSex());
+                userSubject.put("birthday", user.getBirthday());
+                userSubject.put("info", user.getInfo());
+                userSubject.put("last_time", user.getLastTime());
+                String token = JwtUtil.createJWT(userSubject);
+                HashMap<String, Object> data = new HashMap<>();
+                data.put("token", token);
+                return R.restResult(data,UserCode.LOGIN_SUCCESS);
+            }
+        } else {
+            // 用户不存在
+            log.info(username + "用户不存在！");
+            return R.restResult(null,UserCode.NOT_EXIST_USERNAME);
+        }
     }
 
     /**
-     * 新增数据
+     * 用户注册
      *
-     * @param tUser 实体对象
-     * @return 新增结果
+     * @param tUser 用户名与密码
+     * @return 注册结果
      */
     @PostMapping("/register")
     public R<Map<String, String>> insert(@RequestParam Map<String, String> tUser) {
-        log.info(tUser.toString());
+        log.info("用户注册中" + tUser.toString());
+        String username = tUser.get("username");
+        String password = tUser.get("password");
+        // 用户名格式错误
+        if (username.length() == 0 || username.length() > 20) {
+            log.info("用户名格式错误");
+            return R.restResult(null,UserCode.USERNAME_PATTERN_ERROR);
+        }
+        // 密码格式错误
+        if (password.length() < 8 || password.length() > 20) {
+            log.info("密码格式错误");
+            return R.restResult(null, UserCode.PASSWORD_PATTERN_ERROR);
+        }
+        // 用户已存在
+        if (tUserServiceImpl.getOne(Wrappers.<TUser>lambdaQuery().eq(TUser::getUsername,username)) != null) {
+            log.info(username + "用户已存在");
+            return R.failed(UserCode.EXIST_USERNAME);
+        }
 
+        TUser user = new TUser();
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setCreateTime(BaseUtil.getNowTime());
+        user.setState(1);
 
-
-        //boolean rs = tUserService.save(tUser);
-        return R.ok(tUser);
+        boolean flag = tUserServiceImpl.save(user);
+        if (flag) {
+            log.info(username + "用户注册成功！");
+            return R.restResult(null, UserCode.REGISTER_SUCCESS);
+        } else {
+            log.info(username + "用户注册失败");
+            return R.restResult(null, UserCode.REGISTER_FAILED);
+        }
     }
 
     /**
-     * 修改数据
+     * 修改密码
      *
      * @param tUser 实体对象
      * @return 修改结果
      */
-    @PutMapping
-    public R<Boolean> update(@RequestBody TUser tUser) {
-        return R.ok(tUserService.updateById(tUser));
+    @PutMapping("/updatePassword")
+    public R<Boolean> update(@RequestParam String password, HttpServletRequest request) {
+        String username = (String)request.getAttribute("username");
+        password = password.trim();
+        log.info(username + "正在修改密码...");
+        if (password.length() < 8 || password.length() > 20) {
+            log.info("密码格式错误");
+            return R.restResult(null, UserCode.PASSWORD_PATTERN_ERROR);
+        }
+        TUser user = tUserServiceImpl.getOne(Wrappers.<TUser>lambdaQuery().eq(TUser::getUsername, username));
+        if (user.getPassword().equals(password)) {
+            log.info("新密码不能与原密码一致！");
+            return R.failed(UserCode.SAME_PASSWORD_ERROE);
+        }
+
+        boolean flag = tUserServiceImpl.update(Wrappers.<TUser>lambdaUpdate().set(TUser::getPassword, password));
+        if (flag) {
+            log.info(username + "修改密码成功！");
+            return R.restResult(null, UserCode.UPDATE_PASSWORD_SUCCESS);
+        } else {
+            log.info(username + "密码修改失败！");
+            return R.restResult(null, UserCode.UPDATE_PASSWORD_FAILED);
+        }
     }
 
     /**
@@ -94,6 +189,22 @@ public class TUserController {
      */
     @DeleteMapping
     public R<Boolean> delete(@RequestParam("idList") List<Long> idList) {
-        return R.ok(tUserService.removeByIds(idList));
+        return R.ok(tUserServiceImpl.removeByIds(idList));
+    }
+
+    /**
+     * 检测用户是否已存在
+     * @param username
+     * @return
+     */
+    @RequestMapping("checkRepeat/{username}")
+    public R<Map<String,String>> checkRepeat(@PathVariable String username) {
+        log.info(username + " 正在注册，检测重名中...");
+        if (tUserServiceImpl.getOne(Wrappers.<TUser>lambdaQuery().eq(TUser::getUsername,username)) == null) {
+            return R.restResult(null,UserCode.NOT_EXIST_USERNAME);
+        } else {
+            log.info(username + "用户已存在");
+            return R.failed(UserCode.EXIST_USERNAME);
+        }
     }
 }
