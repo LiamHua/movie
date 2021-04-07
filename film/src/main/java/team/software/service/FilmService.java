@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team.software.bean.FilmBean;
+import team.software.bean.FilmDetailBean;
 import team.software.bean.ResultMap;
 import team.software.mapper.FilmMapper;
 import team.software.util.BaseUtil;
@@ -101,6 +102,71 @@ public class FilmService {
                 bean.setCasts(casts.replaceAll(",", "/"));
             }
         }
+        Map<String,Object> dataMap = new HashMap<>();
+        dataMap.put("data",list);
+        dataMap.put("count", pageInfo.getTotal());
+        dataMap.put("nowPage", pageInfo.getPageNum());
+        dataMap.put("totalPages",pageInfo.getPages());
+        resultMap.setCode("200");
+        resultMap.setMsg("请求成功");
+        resultMap.setData(dataMap);
+        return resultMap;
+    }
+
+
+    /**
+     * 影片展示数据
+     * @param param 页码参数
+     * @return 结果集
+     */
+    public ResultMap findFilm(Map<String, String> param){
+        Map<String,Object> search = solveSearchParam(param);
+        ResultMap resultMap = new ResultMap();
+        String page = param.get("page");
+        //默认第一页
+        Integer pno = 1;
+        if (!BaseUtil.isEmpty(page)){
+            pno = Integer.parseInt(page);
+        }
+        //每页的数据条数
+        Integer pageSize = 20;
+        PageHelper.startPage(pno,pageSize);
+        List<FilmDetailBean> list = this.filmMapper.queryFilmDetail(search);
+
+        PageInfo<FilmDetailBean> pageInfo = new PageInfo<>(list);
+        list = pageInfo.getList();
+        Map<String,Object> dataMap = new HashMap<>();
+
+        dataMap.put("data",list);
+        dataMap.put("count", pageInfo.getTotal());
+        dataMap.put("nowPage", pageInfo.getPageNum());
+        dataMap.put("totalPages",pageInfo.getPages());
+        resultMap.setCode("200");
+        resultMap.setMsg("请求成功");
+        resultMap.setData(dataMap);
+        return resultMap;
+    }
+
+    /**
+     * 查询热门影片 按照热度降序分页排列
+     * @param param 页码
+     * @return 结果集
+     */
+    public ResultMap findHotFilm(Map<String, String> param){
+        Map<String,Object> search = solveSearchParam(param);
+        ResultMap resultMap = new ResultMap();
+        String page = param.get("page");
+        //默认第一页
+        Integer pno = 1;
+        if (!BaseUtil.isEmpty(page)){
+            pno = Integer.parseInt(page);
+        }
+        //每页的数据条数
+        Integer pageSize = 20;
+        PageHelper.startPage(pno,pageSize);
+        List<FilmDetailBean> list = this.filmMapper.queryHotFilm(search);
+        PageInfo<FilmDetailBean> pageInfo = new PageInfo<>(list);
+        list = pageInfo.getList();
         Map<String,Object> dataMap = new HashMap<>();
         dataMap.put("data",list);
         dataMap.put("count", pageInfo.getTotal());

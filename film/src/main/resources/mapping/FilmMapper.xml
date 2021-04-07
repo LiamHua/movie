@@ -1,6 +1,32 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="team.software.mapper.FilmMapper">
+
+    <resultMap id="FilmDetailBeanMap" type="FilmDetailBean">
+        <id property="id" column="id"/>
+        <result property="html_id" column="html_id"/>
+        <result property="translated_term" column="translated_term"/>
+        <result property="name" column="name"/>
+        <result property="cover" column="cover"/>
+        <result property="decade" column="decade"/>
+        <result property="language" column="language"/>
+        <result property="subtitle" column="subtitle"/>
+        <result property="release_time" column="release_time"/>
+        <result property="douban" column="douban"/>
+        <result property="length" column="length"/>
+        <result property="info" column="info"/>
+        <result property="link" column="link"/>
+        <result property="upload_time" column="upload_time"/>
+        <result property="hot" column="hot"/>
+        <result property="collect" column="collect"/>
+        <collection property="starList" ofType="StarBean">
+            <id property="id" column="star_id"/>
+            <result property="douban_id" column="douban_id"/>
+            <result property="CN_name" column="CN_name"/>
+            <result property="EN_name" column="EN_name"/>
+        </collection>
+    </resultMap>
+
     <select id="queryFilm" parameterType="map" resultType="team.software.bean.FilmBean">
         SELECT
             film.id,
@@ -101,5 +127,60 @@
                     </otherwise>
                 </choose>
             </if>
+    </select>
+
+
+    <select id="queryFilmDetail" parameterType="map" resultMap="FilmDetailBeanMap">
+        SELECT
+            film.id,
+            film.html_id,
+            film.translated_term,
+            film.`name`,
+            film.cover,
+            film.decade,
+            film.`language`,
+            film.subtitle,
+            film.release_time,
+            film.douban,
+            film.length,
+            film.info,
+            film.link,
+            film.upload_time,
+            film.hot,
+            film.collect,
+            GROUP_CONCAT( star.id ) AS star_id,
+            GROUP_CONCAT( star.douban_id ) AS douban_id,
+            GROUP_CONCAT( star.CN_name ) AS CN_name,
+            GROUP_CONCAT( star.EN_name ) AS EN_name
+        FROM
+            film
+                LEFT JOIN film_star ON film.id = film_star.film_id
+                LEFT JOIN star ON star.id = film_star.star_id
+        GROUP BY
+            film.id
+    </select>
+
+    <select id="queryHotFilm" parameterType="map" resultMap="FilmDetailBeanMap">
+        SELECT
+            film.id,
+            film.html_id,
+            film.translated_term,
+            film.`name`,
+            film.cover,
+            film.decade,
+            film.`language`,
+            film.subtitle,
+            film.release_time,
+            film.douban,
+            film.length,
+            film.info,
+            film.link,
+            film.upload_time,
+            film.hot,
+            film.collect
+        FROM
+            film
+        ORDER BY
+            film.hot DESC
     </select>
 </mapper>
