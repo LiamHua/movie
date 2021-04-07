@@ -62,7 +62,7 @@ public class JwtUtil {
         JwtBuilder builder = Jwts.builder().setHeaderParam("typ", "JWT")
                 .setIssuedAt(now)
                 .setAudience(map.get("username").toString())
-                .setSubject(map.toString())
+                .setClaims(map)
                 //设置签名使用的签名算法和签名使用的秘钥
                 .signWith(signatureAlgorithm, signingKey);
 
