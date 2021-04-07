@@ -153,7 +153,7 @@ public class TUserController {
     /**
      * 修改密码
      *
-     * @param tUser 实体对象
+     * @param password 新密码
      * @return 修改结果
      */
     @PutMapping("/updatePassword")
@@ -167,7 +167,7 @@ public class TUserController {
         }
         TUser user = tUserServiceImpl.getOne(Wrappers.<TUser>lambdaQuery().eq(TUser::getUsername, username));
         if (user.getPassword().equals(password)) {
-            log.info("新密码不能与原密码一致！");
+            log.info("密码修改失败，新密码不能与原密码一致！");
             return R.failed(UserCode.SAME_PASSWORD_ERROE);
         }
 
