@@ -1,5 +1,9 @@
 package team.chenxin.service;
 
+import team.chenxin.bean.Favorite;
+
+import java.util.List;
+
 /**
  * @Description TODO
  * @PACKAGE_NAME: team.chenxin.service
@@ -10,4 +14,12 @@ package team.chenxin.service;
  * @PROJECT_NAME: movie
  **/
 public interface FavoriteService {
+
+    List<Favorite> listAllFavorites(int user_id);
+    void addFavorite(Favorite favorite);
+    boolean getFavorite(long fa_id, int user_id);
+
+    void deleteFavorite(long fa_id);
+
+    void modifyFavorite(long fa_id,String name);
 }

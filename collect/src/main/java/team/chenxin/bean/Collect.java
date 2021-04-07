@@ -15,10 +15,11 @@ import java.io.Serializable;
  * @PROJECT_NAME: movie
  **/
 @Data
+@Repository
 public class Collect implements Serializable {
 
     int id;
     int film_id;
     int favorite_id;
-    int collect_time;
+    String collect_time;
 }

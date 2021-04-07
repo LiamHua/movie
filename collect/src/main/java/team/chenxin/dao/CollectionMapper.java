@@ -20,18 +20,22 @@ import java.util.List;
 @Repository(value = "team.chenxin.dao.CollectionMapper")
 public interface CollectionMapper {
 
-    List<Collect> getColletionsByFaid(@Param("fa_id") int fa_id);
+    List<Collect> getColletionsByFaid(@Param("fa_id") long fa_id);
 
-    void addCollection(@Param("fa_id") int fa_id,
+    int getCollect(@Param("fa_id") long fa_id,
+                       @Param("film_id") int film_id);
+
+    void addCollection(@Param("fa_id") long fa_id,
                        @Param("film_id") int film_id,
                        @Param("collect_time")String collect_time);
 
-    void copyCollection(@Param("fa_id") int fa_id,
-                        @Param("film_id") int film_id);
+    void copyCollection(@Param("fa_id") long fa_id,
+                        @Param("film_id") int film_id,
+                        @Param("collect_time")String collect_time);
 
-    void deleteCollection(@Param("fa_id") int fa_id,
+    void deleteCollection(@Param("fa_id") long fa_id,
                           @Param("film_id") int film_id);
 
-    void moveCollection(@Param("fa_id") int fa_id,
+    void moveCollection(@Param("fa_id") long fa_id,
                          @Param("film_id")int film_id);
 }
