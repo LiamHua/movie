@@ -18,7 +18,7 @@ import java.io.IOException;
  * @date 2021/4/7 15:26
  */
 @Slf4j
-@Order(1)
+@Order(2)
 @WebFilter(initParams = {@WebInitParam(name = "nofilter", value = "/user/register,/user/login,/user/checkRepeat", description = "可以直接通过的路径")})
 public class UserFilter implements Filter {
     /**
