@@ -69,8 +69,8 @@ public class TUserController {
             log.info("用户名格式错误!");
             return R.restResult(null,UserCode.USERNAME_PATTERN_ERROR);
         }
-        // 密码格式错误
-        if (password.length() < 8 || password.length() > 20) {
+        // 密码格式错误，加密后密码长度为32位
+        if (password.length() != 32) {
             log.info("密码格式错误!");
             return R.restResult(null, UserCode.PASSWORD_PATTERN_ERROR);
         }
@@ -96,7 +96,7 @@ public class TUserController {
                 userSubject.put("info", user.getInfo());
                 userSubject.put("last_time", user.getLastTime());
                 String token = JwtUtil.createJWT(userSubject);
-                HashMap<String, Object> data = new HashMap<>();
+                HashMap<String, Object> data = new HashMap<>(16);
                 data.put("token", token);
                 return R.restResult(data,UserCode.LOGIN_SUCCESS);
             }
@@ -123,8 +123,8 @@ public class TUserController {
             log.info("用户名格式错误");
             return R.restResult(null,UserCode.USERNAME_PATTERN_ERROR);
         }
-        // 密码格式错误
-        if (password.length() < 8 || password.length() > 20) {
+        // 密码格式错误，加密后密码长度为32位
+        if (password.length() != 32) {
             log.info("密码格式错误");
             return R.restResult(null, UserCode.PASSWORD_PATTERN_ERROR);
         }
@@ -161,7 +161,7 @@ public class TUserController {
         String username = (String)request.getAttribute("username");
         password = password.trim();
         log.info(username + "正在修改密码...");
-        if (password.length() < 8 || password.length() > 20) {
+        if (password.length() != 32) {
             log.info("密码格式错误");
             return R.restResult(null, UserCode.PASSWORD_PATTERN_ERROR);
         }
