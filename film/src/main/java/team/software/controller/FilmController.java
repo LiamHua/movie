@@ -29,4 +29,25 @@ public class FilmController {
     public ResultMap movieSearch(@RequestParam Map<String,String> param){
         return this.filmService.movieSearch(param);
     }
+
+
+    /**
+     * 查询影片集合
+     * @param param 页码参数
+     * @return 结果集
+     */
+    @RequestMapping(value = "findFilm",method = RequestMethod.POST)
+    public  ResultMap findFilm(@RequestParam Map<String, String> param){
+        return this.filmService.findFilm(param);
+    }
+
+    /**
+     * 查询热门电影
+     * @param param 页码参数
+     * @return 结果集
+     */
+    @RequestMapping(value = "findHotFilm",method = RequestMethod.POST)
+    public ResultMap findHotFilm(@RequestParam Map<String, String> param){
+        return this.filmService.findHotFilm(param);
+    }
 }
