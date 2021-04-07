@@ -7,7 +7,7 @@ logging:
 #  mapper-locations: classpath:mapping/*.xml
 #  type-aliases-package: team.software.bean
 server:
-  port: 8083
+  port: 8084
 spring:
   application:
     name: spider
