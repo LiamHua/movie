@@ -3,7 +3,7 @@ package team.chenxin.utils;
 import java.util.Date;
 
 /**
- * @Description TODO
+ * @Description TODO 生成唯一的Long类型ID
  * @PACKAGE_NAME: team.chenxin.utils
  * @NAME: IDUtil
  * @USER: Chenxin
