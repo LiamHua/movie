@@ -9,6 +9,7 @@ import team.chenxin.utils.IDUtil;
 import team.chenxin.utils.TimeUtil;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -37,10 +38,11 @@ public class FavoriteController {
     * @return: org.springframework.http.ResponseEntity<java.util.List<team.chenxin.bean.Favorite>>
     * @Date: 2021/4/7
     */
-    @GetMapping("/listAllFavorite/user_id/{user_id}")
-    public ResponseEntity<List<Favorite>> listAllFavorites(@PathVariable(value = "user_id") int userId)
+    @GetMapping("/listAllFavorite")
+    public ResponseEntity<List<Favorite>> listAllFavorites( HttpServletRequest request)
     {
-        List<Favorite> favorites = favoriteService.listAllFavorites(userId);
+        int user_id = (int) request.getAttribute("user_id");
+        List<Favorite> favorites = favoriteService.listAllFavorites(user_id);
         return ResponseEntity.ok(favorites);
     }
 
