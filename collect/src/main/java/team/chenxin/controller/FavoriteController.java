@@ -60,7 +60,6 @@ public class FavoriteController {
         {
             message.setStatus("fail");
             message.setMsg("收藏已存在");
-            return ResponseEntity.ok(message);
         } else
         {
             favorite.setCreate_time(TimeUtil.getTimeNow());
@@ -68,8 +67,8 @@ public class FavoriteController {
             favoriteService.addFavorite(favorite);
             message.setStatus("succeed");
             message.setMsg("添加成功");
-            return ResponseEntity.ok(message);
         }
+        return ResponseEntity.ok(message);
     }
 
     /**
@@ -78,22 +77,22 @@ public class FavoriteController {
     * @return: org.springframework.http.ResponseEntity<team.chenxin.message.Message>
     * @Date: 2021/4/7
     */
-    @DeleteMapping("/deleteFavorite/{favorite_id}/user/{user_id}")
+    @DeleteMapping("/deleteFavorite/{favorite_id}")
     public ResponseEntity<Message> deleteFavorite(@PathVariable(value = "favorite_id")int fa_id,
-                                                  @PathVariable(value = "user_id")int user_id)
+                                                  HttpServletRequest request)
     {
+        int user_id = (int) request.getAttribute("user_id");
         if (favoriteService.getFavorite(fa_id,user_id))
         {
             favoriteService.deleteFavorite(fa_id);
             message.setStatus("succeed");
             message.setMsg("删除成功");
-            return ResponseEntity.ok(message);
         } else
         {
             message.setStatus("fail");
             message.setMsg("删除失败请添加页面");
-            return ResponseEntity.ok(message);
         }
+        return ResponseEntity.ok(message);
     }
 
     /**
@@ -105,20 +104,20 @@ public class FavoriteController {
     @PutMapping("/modifyfavorite")
     public ResponseEntity<Message> modifyFavorite(@RequestParam(value = "favorite_name")String name,
                                                   @RequestParam(value = "favorite_id") int fa_id,
-                                                  @RequestParam(value = "user_id")int user_id)
+                                                  HttpServletRequest request)
     {
+        int user_id = (int) request.getAttribute("user_id");
         if (favoriteService.getFavorite(fa_id,user_id))
         {
             favoriteService.modifyFavorite(fa_id,name);
             message.setStatus("succeed");
             message.setMsg("修改成功");
-            return ResponseEntity.ok(message);
         } else
         {
             message.setStatus("fail");
             message.setMsg("修改失败");
-            return ResponseEntity.ok(message);
         }
+        return ResponseEntity.ok(message);
     }
 
 }
