@@ -31,14 +31,25 @@ public class FavoriteController {
     @Resource
     private Message message;
 
-        @GetMapping("/listAllFavorite/user_id/{user_id}")
+    /**
+    * @Description: 获取收藏夹列表
+    * @Param: [userId]
+    * @return: org.springframework.http.ResponseEntity<java.util.List<team.chenxin.bean.Favorite>>
+    * @Date: 2021/4/7
+    */ 
+    @GetMapping("/listAllFavorite/user_id/{user_id}")
     public ResponseEntity<List<Favorite>> listAllFavorites(@PathVariable(value = "user_id") int userId)
     {
         List<Favorite> favorites = favoriteService.listAllFavorites(userId);
         return ResponseEntity.ok(favorites);
     }
 
-
+    /**
+    * @Description: 添加收藏夹
+    * @Param: [favorite]
+    * @return: org.springframework.http.ResponseEntity<team.chenxin.message.Message>
+    * @Date: 2021/4/7
+    */ 
     @PostMapping("/addFavorite")
     public ResponseEntity<Message> addFavorite( @RequestBody Favorite favorite)
     {
@@ -59,7 +70,12 @@ public class FavoriteController {
         }
     }
 
-
+    /**
+    * @Description: 删除收藏夹
+    * @Param: [fa_id, user_id]
+    * @return: org.springframework.http.ResponseEntity<team.chenxin.message.Message>
+    * @Date: 2021/4/7
+    */ 
     @DeleteMapping("/deleteFavorite/{favorite_id}/user/{user_id}")
     public ResponseEntity<Message> deleteFavorite(@PathVariable(value = "favorite_id")int fa_id,
                                                   @PathVariable(value = "user_id")int user_id)
@@ -78,6 +94,12 @@ public class FavoriteController {
         }
     }
 
+    /**
+    * @Description: 修改收藏夹
+    * @Param: [name, fa_id, user_id]
+    * @return: org.springframework.http.ResponseEntity<team.chenxin.message.Message>
+    * @Date: 2021/4/7
+    */ 
     @PutMapping("/modifyfavorite")
     public ResponseEntity<Message> modifyFavorite(@RequestParam(value = "favorite_name")String name,
                                                   @RequestParam(value = "favorite_id") int fa_id,
