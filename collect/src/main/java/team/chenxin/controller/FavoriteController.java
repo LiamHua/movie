@@ -112,7 +112,6 @@ public class FavoriteController {
             message.setMsg("修改成功");
             return ResponseEntity.ok(message);
         } else
-        {
             message.setStatus("fail");
             message.setMsg("修改失败");
             return ResponseEntity.ok(message);
