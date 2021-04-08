@@ -74,6 +74,9 @@ public class UserFilter implements Filter {
                     response.getWriter().write(JSON.toJSONString(R.restResult("", UserCode.TOKEN_ERROR)));
                     return;
                 }
+            } else {
+                response.getWriter().write(JSON.toJSONString(R.restResult("", UserCode.UNAUTHORIZATION)));
+                return;
             }
         } else {
             filterChain.doFilter(request, servletResponse);
