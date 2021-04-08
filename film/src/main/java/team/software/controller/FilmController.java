@@ -20,6 +20,17 @@ public class FilmController {
     @Autowired
     private FilmService filmService;
 
+    @RequestMapping(value = "genres",method = RequestMethod.POST)
+    public ResultMap genres(){
+        return this.filmService.genres();
+    }
+
+    @RequestMapping(value = "areas",method = RequestMethod.POST)
+    public ResultMap areas(){
+        return this.filmService.areas();
+    }
+
+
     /**
      * 挑选影片功能
      * @param param 参数

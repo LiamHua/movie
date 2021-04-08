@@ -46,6 +46,14 @@ public class ResultMap {
         return data;
     }
 
+    public ResultMap OK(Object data){
+        ResultMap resultMap = new ResultMap();
+        resultMap.setCode("200");
+        resultMap.setMsg("请求成功");
+        resultMap.setData(data);
+        return resultMap;
+    }
+
     public void setData(Object data) {
         this.data = data;
     }
