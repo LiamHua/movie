@@ -76,6 +76,7 @@ public class TUserController {
                 // 登陆成功
                 log.info(username + "用户登陆成功！");
                 HashMap<String, Object> data = new HashMap<>(16);
+                // 检查Redis中该用户是否存在有效的token
                 String token = (String) redisUtil.get(username);
                 if (token != null) {
                     data.put("token", token);
