@@ -4,15 +4,11 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import team.software.bean.FilmBean;
-import team.software.bean.ResultMap;
+import team.software.bean.*;
 import team.software.mapper.FilmMapper;
 import team.software.util.BaseUtil;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author huao
@@ -109,6 +105,82 @@ public class FilmService {
         resultMap.setCode("200");
         resultMap.setMsg("请求成功");
         resultMap.setData(dataMap);
+        return resultMap;
+    }
+
+    /**
+     * 影片展示数据
+     * @param param 页码参数
+     * @return 结果集
+     */
+    public ResultMap queryMovie(Map<String, String> param){
+        ResultMap resultMap = new ResultMap();
+        String film_id = param.get("id");
+        if (BaseUtil.isEmpty(film_id)){
+            resultMap.setCode("500");
+            return resultMap;
+        }
+        FilmDetailBean bean = this.filmMapper.queryFilmDetail(param);
+        if (BaseUtil.isEmpty(bean)){
+            resultMap.setCode("500");
+            return resultMap;
+        }
+        List<StarBean> directorList = this.filmMapper.queryFilmDirector(film_id);
+        List<StarBean> scriptwriterList = this.filmMapper.queryFilmScriptwriter(film_id);
+        List<StarBean> starList = this.filmMapper.queryFilmStar(film_id);
+        bean.setDirectorList(directorList);
+        bean.setScriptwriterList(scriptwriterList);
+        bean.setStarList(starList);
+        if(!this.filmMapper.updateFilmHot(film_id)){
+            resultMap.setCode("500");
+            return resultMap;
+        }
+        resultMap.setCode("200");
+        resultMap.setMsg("请求成功");
+        resultMap.setData(bean);
+
+        return resultMap;
+    }
+
+    /**
+     * 查询电影获奖内容
+     * @param param 电影id
+     * @return 结果集
+     */
+    public ResultMap queryFilmAward(Map<String, String> param) {
+        String film_id = param.get("id");
+        ResultMap resultMap = new ResultMap();
+        if(BaseUtil.isEmpty(film_id)){
+            resultMap.setCode("500");
+            return resultMap;
+        }
+        List<AwardBean> beanList = this.filmMapper.queryFilmAward(film_id);
+
+        Map<String, List<String>> map = new HashMap<>();
+        Map<String,AwardBean > dataMap = new HashMap<>();
+        for (AwardBean bean : beanList){
+            String award_id = bean.getAwardId();
+            List<String> content = map.get(award_id);
+            if (BaseUtil.isEmptyList(content)){
+                content = new ArrayList<>();
+            }
+            content.add(bean.getAwardContent());
+            map.put(award_id,content);
+            dataMap.put(award_id,bean);
+        }
+        List<AwardBean> dataList = new ArrayList<>();
+        Iterator<Map.Entry<String, AwardBean>> it= dataMap.entrySet().iterator();
+        while(it.hasNext()){
+            Map.Entry<String, AwardBean> entry=it.next();
+            String award_id = entry.getKey();
+            AwardBean bean = entry.getValue();
+            bean.setAwardContentList(map.get(award_id));
+            bean.setAwardContent(null);
+            dataList.add(bean);
+        }
+        resultMap.setCode("200");
+        resultMap.setMsg("请求成功");
+        resultMap.setData(dataList);
         return resultMap;
     }
 }

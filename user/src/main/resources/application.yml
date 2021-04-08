@@ -7,10 +7,16 @@ logging:
 #  mapper-locations: classpath:mapping/*.xml
 #  type-aliases-package: team.software.bean
 server:
-  port: 8083
+  port: 8084
 spring:
   application:
     name: spider
+  redis:
+    database: 1
+    host: redis.huazai.vip
+    password: LZHlzh$$
+    port: 6379
+    timeout: 10000
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: movie

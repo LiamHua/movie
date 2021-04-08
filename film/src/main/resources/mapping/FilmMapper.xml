@@ -104,4 +104,112 @@
                 </choose>
             </if>
     </select>
+
+
+    <select id="queryFilmDetail" parameterType="map" resultType="team.software.bean.FilmDetailBean">
+        SELECT
+            film.id,
+            film.translated_term,
+            film.name,
+            film.cover,
+            film.decade,
+            film.language,
+            film.subtitle,
+            film.release_time,
+            film.douban,
+            film.length,
+            film.info,
+            film.link,
+            film.upload_time,
+            film.hot,
+            film.collect,
+            (
+                SELECT
+                    GROUP_CONCAT( area.name )
+                FROM
+                    film_area
+                        LEFT JOIN area ON area.id = film_area.area_id
+                WHERE
+                    film.id = film_area.film_id
+            ) AS areas,
+            (
+                SELECT
+                    GROUP_CONCAT( category.name)
+                FROM
+                    film_category
+                        LEFT JOIN category ON category.id = film_category.category_id
+                WHERE
+                    film.id = film_category.film_id
+            ) AS category,
+            (
+                SELECT
+                    GROUP_CONCAT( tag.name )
+                FROM
+                    film_tag
+                        LEFT JOIN tag ON tag.id = film_tag.tag_id
+                WHERE
+                    film.id = film_tag.film_id
+            ) AS tags
+        FROM
+            film
+                LEFT JOIN html ON html.id = film.html_id
+        WHERE
+            film.id = #{id}
+          AND html.state = 1
+    </select>
+
+    <select id="queryFilmDirector" parameterType="string" resultType="team.software.bean.StarBean">
+        SELECT
+            star.id,
+            star.CN_name,
+            star.EN_name
+        FROM
+            film_director
+                LEFT JOIN star ON star.id = film_director.star_id
+        WHERE
+            film_director.film_id = #{id}
+    </select>
+
+    <select id="queryFilmScriptwriter" parameterType="string" resultType="team.software.bean.StarBean">
+        SELECT
+            star.id,
+            star.CN_name,
+            star.EN_name
+        FROM
+            film_scriptwriter
+                LEFT JOIN star ON star.id = film_scriptwriter.star_id
+        WHERE
+            film_scriptwriter.film_id = #{id}
+    </select>
+
+    <select id="queryFilmStar" parameterType="string" resultType="team.software.bean.StarBean">
+        SELECT
+            star.id,
+            star.CN_name,
+            star.EN_name
+        FROM
+            film_star
+                LEFT JOIN star ON star.id = film_star.star_id
+        WHERE
+            film_star.film_id = #{id}
+    </select>
+
+    <select id="queryFilmAward" parameterType="string" resultType="team.software.bean.AwardBean">
+        SELECT
+            award.id AS award_id,
+            award.`name` AS award_name,
+            film_award.award_content  AS award_content
+        FROM
+            film_award
+                LEFT JOIN award ON award.id = film_award.award_id
+        WHERE
+            film_award.film_id = #{id}
+    </select>
+
+    <update id="updateFilmHot" parameterType="string" >
+        UPDATE film
+        SET film.hot = film.hot + 1
+        WHERE
+            film.id =#{id}
+    </update>
 </mapper>

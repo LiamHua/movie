@@ -29,13 +29,19 @@ public class CollectServiceImpl implements CollectService {
     }
 
     @Override
-    public void addCollection(int fa_id, int film_id, int collect_time) {
+    public boolean getCollectionByFaiIddFilmId(int fa_id, int film_id) {
+        int i=collectionMapper.getCollect(fa_id,film_id);
+        return i != 0;
+    }
+
+    @Override
+    public void addCollection(int fa_id, int film_id, String collect_time) {
         collectionMapper.addCollection(fa_id,film_id,collect_time);
     }
 
     @Override
-    public void copyCollection(int fa_id, int film_id) {
-        collectionMapper.copyCollection(fa_id,film_id);
+    public void copyCollection(int fa_id, int film_id,String collect_time) {
+        collectionMapper.copyCollection(fa_id,film_id,collect_time);
     }
 
     @Override

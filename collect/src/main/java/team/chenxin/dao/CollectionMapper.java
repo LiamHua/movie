@@ -22,12 +22,16 @@ public interface CollectionMapper {
 
     List<Collect> getColletionsByFaid(@Param("fa_id") int fa_id);
 
+    int getCollect(@Param("fa_id") int fa_id,
+                       @Param("film_id") int film_id);
+
     void addCollection(@Param("fa_id") int fa_id,
                        @Param("film_id") int film_id,
-                       @Param("collect_time")int collect_time);
+                       @Param("collect_time")String collect_time);
 
     void copyCollection(@Param("fa_id") int fa_id,
-                        @Param("film_id") int film_id);
+                        @Param("film_id") int film_id,
+                        @Param("collect_time")String collect_time);
 
     void deleteCollection(@Param("fa_id") int fa_id,
                           @Param("film_id") int film_id);

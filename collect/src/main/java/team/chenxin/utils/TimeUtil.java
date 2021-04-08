@@ -1,6 +1,7 @@
 package team.chenxin.utils;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 
@@ -17,7 +18,7 @@ public final class TimeUtil {
     public static String getTimeNow()
     {
         DateTimeFormatter newFormatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-        LocalDate date = LocalDate.now();
+        LocalDateTime date = LocalDateTime.now();
         return date.format(newFormatter);
     }
 }

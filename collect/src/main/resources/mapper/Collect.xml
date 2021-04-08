@@ -11,7 +11,28 @@
 
     <insert id="addCollection" keyColumn="id" keyProperty="id">
         insert into `collect` (film_id,favorite_id,collect_time)
-        values (#{fa_id},#{favorite_id},)
-        where
+        values (#{film_id},#{fa_id},#{collect_time})
     </insert>
+
+    <select id="getCollect" resultType="int">
+        select COUNT(*) from collect
+        where film_id=#{film_id} and favorite_id=#{fa_id}
+    </select>
+
+    <insert id="copyCollection" >
+        insert into collect (film_id,favorite_id,collect_time)
+        values (#{film_id},#{fa_id},#{collect_time})
+    </insert>
+
+    <insert id="deleteCollection">
+        delete from collect
+        where film_id=#{film_id} and favorite_id=#{fa_id}
+    </insert>
+
+    <update id="moveCollection">
+        update collect
+        set favorite_id=#{fa_id}
+        where film_id=#{film_id}
+    </update>
+
 </mapper>
