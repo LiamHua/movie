@@ -1,51 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="team.software.mapper.FilmMapper">
-
-<!--    <resultMap id="FilmDetailBeanMap" type="FilmDetailBean">-->
-<!--    <id property="id" column="id"/>-->
-<!--    <result property="translated_term" column="translated_term"/>-->
-<!--    <result property="name" column="name"/>-->
-<!--    <result property="cover" column="cover"/>-->
-<!--    <result property="decade" column="decade"/>-->
-<!--    <result property="language" column="language"/>-->
-<!--    <result property="subtitle" column="subtitle"/>-->
-<!--    <result property="release_time" column="release_time"/>-->
-<!--    <result property="douban" column="douban"/>-->
-<!--    <result property="length" column="length"/>-->
-<!--    <result property="info" column="info"/>-->
-<!--    <result property="link" column="link"/>-->
-<!--    <result property="upload_time" column="upload_time"/>-->
-<!--    <result property="hot" column="hot"/>-->
-<!--    <result property="collect" column="collect"/>-->
-<!--    &lt;!&ndash;        地区&ndash;&gt;-->
-<!--    <result property="areas" column="areas"/>-->
-<!--    &lt;!&ndash;        目录&ndash;&gt;-->
-<!--    <result property="category" column="category"/>-->
-<!--&lt;!&ndash;        标签&ndash;&gt;-->
-<!--        <result property="tags" column="tags"/>-->
-
-<!--        &lt;!&ndash;        编剧&ndash;&gt;-->
-<!--    <collection property="scriptwriterList" ofType="StarBean">-->
-<!--        <id property="id" column="scriptwriter_id"/>-->
-<!--        <result property="CN_name" column="scriptwriter_CN_name"/>-->
-<!--        <result property="EN_name" column="scriptwriter_EN_name"/>-->
-<!--    </collection>-->
-<!--    &lt;!&ndash;        导演&ndash;&gt;-->
-<!--    <collection property="directorList" ofType="StarBean">-->
-<!--        <id property="id" column="director_id"/>-->
-<!--        <result property="CN_name" column="director_CN_name"/>-->
-<!--        <result property="EN_name" column="director_EN_name"/>-->
-<!--    </collection>-->
-<!--    &lt;!&ndash;        演员&ndash;&gt;-->
-<!--    <collection property="starList" ofType="StarBean">-->
-<!--        <id property="id" column="star_id"/>-->
-<!--        <result property="CN_name" column="star_CN_name"/>-->
-<!--        <result property="EN_name" column="star_EN_name"/>-->
-<!--    </collection>-->
-
-<!--</resultMap>-->
-
     <select id="queryFilm" parameterType="map" resultType="team.software.bean.FilmBean">
         SELECT
             film.id,
@@ -237,27 +192,22 @@
             film_star.film_id = #{id}
     </select>
 
-    <select id="queryHotFilm" parameterType="map" resultType="team.software.bean.FilmDetailBean">
+    <select id="queryFilmAward" parameterType="string" resultType="team.software.bean.AwardBean">
         SELECT
-            film.id,
-            film.html_id,
-            film.translated_term,
-            film.`name`,
-            film.cover,
-            film.decade,
-            film.`language`,
-            film.subtitle,
-            film.release_time,
-            film.douban,
-            film.length,
-            film.info,
-            film.link,
-            film.upload_time,
-            film.hot,
-            film.collect
+            award.id AS award_id,
+            award.`name` AS award_name,
+            film_award.award_content  AS award_content
         FROM
-            film
-        ORDER BY
-            film.hot DESC
+            film_award
+                LEFT JOIN award ON award.id = film_award.award_id
+        WHERE
+            film_award.film_id = #{id}
     </select>
+
+    <update id="updateFilmHot" parameterType="string" >
+        UPDATE film
+        SET film.hot = film.hot + 1
+        WHERE
+            film.id =#{id}
+    </update>
 </mapper>

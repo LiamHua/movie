@@ -32,22 +32,17 @@ public class FilmController {
 
 
     /**
-     * 查询影片集合
+     * 查询影片详情
      * @param param 页码参数
      * @return 结果集
      */
-    @RequestMapping(value = "findFilm",method = RequestMethod.POST)
-    public  ResultMap findFilm(@RequestParam Map<String, String> param){
-        return this.filmService.findFilm(param);
+    @RequestMapping(value = "queryMovie",method = RequestMethod.POST)
+    public  ResultMap queryMovie(@RequestParam Map<String, String> param){
+        return this.filmService.queryMovie(param);
     }
 
-    /**
-     * 查询热门电影
-     * @param param 页码参数
-     * @return 结果集
-     */
-    @RequestMapping(value = "findHotFilm",method = RequestMethod.POST)
-    public ResultMap findHotFilm(@RequestParam Map<String, String> param){
-        return this.filmService.findHotFilm(param);
+    @RequestMapping(value = "queryFilmAward",method = RequestMethod.POST)
+    public  ResultMap queryFilmAward(@RequestParam Map<String, String> param){
+        return this.filmService.queryFilmAward(param);
     }
 }

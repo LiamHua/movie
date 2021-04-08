@@ -1,6 +1,7 @@
 package team.software.mapper;
 
 import org.springframework.stereotype.Repository;
+import team.software.bean.AwardBean;
 import team.software.bean.FilmBean;
 import team.software.bean.FilmDetailBean;
 import team.software.bean.StarBean;
@@ -28,4 +29,8 @@ public interface FilmMapper {
     List<StarBean> queryFilmScriptwriter(String film_id);
 
     List<StarBean> queryFilmStar(String film_id);
+
+    List<AwardBean> queryFilmAward(String film_id);
+
+    boolean updateFilmHot(String film_id);
 }
