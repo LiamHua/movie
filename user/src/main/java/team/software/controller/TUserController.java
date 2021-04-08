@@ -161,7 +161,7 @@ public class TUserController {
             return R.failed(UserCode.SAME_PASSWORD_ERROE);
         }
 
-        boolean flag = tUserServiceImpl.update(Wrappers.<TUser>lambdaUpdate().set(TUser::getPassword, password));
+        boolean flag = tUserServiceImpl.update(Wrappers.<TUser>lambdaUpdate().eq(TUser::getUsername, username).set(TUser::getPassword, password));
         if (flag) {
             log.info(username + "修改密码成功！");
             // 删除Redis中的token
