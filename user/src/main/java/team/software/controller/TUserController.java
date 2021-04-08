@@ -8,9 +8,6 @@ import team.software.bean.UserCode;
 import team.software.bean.TUser;
 import team.software.service.TUserService;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.api.R;
 
 import org.springframework.web.bind.annotation.*;
@@ -40,18 +37,6 @@ public class TUserController {
     @Autowired
     @Qualifier("TUserServiceImpl")
     private TUserService tUserServiceImpl;
-
-    /**
-     * 分页查询所有数据
-     *
-     * @param page  分页对象
-     * @param tUser 查询实体
-     * @return 所有数据
-     */
-    @GetMapping
-    public R<IPage<TUser>> selectAll(Page<TUser> page, TUser tUser) {
-        return R.ok(tUserServiceImpl.page(page, new QueryWrapper<>(tUser)));
-    }
 
     /**
      * 用户登陆
