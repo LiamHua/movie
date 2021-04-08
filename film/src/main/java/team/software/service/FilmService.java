@@ -4,16 +4,11 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import team.software.bean.FilmBean;
-import team.software.bean.FilmDetailBean;
-import team.software.bean.ResultMap;
+import team.software.bean.*;
 import team.software.mapper.FilmMapper;
 import team.software.util.BaseUtil;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author huao
@@ -113,37 +108,33 @@ public class FilmService {
         return resultMap;
     }
 
-
     /**
      * 影片展示数据
      * @param param 页码参数
      * @return 结果集
      */
     public ResultMap findFilm(Map<String, String> param){
-        Map<String,Object> search = solveSearchParam(param);
         ResultMap resultMap = new ResultMap();
-        String page = param.get("page");
-        //默认第一页
-        Integer pno = 1;
-        if (!BaseUtil.isEmpty(page)){
-            pno = Integer.parseInt(page);
+        String film_id = param.get("id");
+        if (BaseUtil.isEmpty(film_id)){
+            resultMap.setCode("500");
+            return resultMap;
         }
-        //每页的数据条数
-        Integer pageSize = 20;
-        PageHelper.startPage(pno,pageSize);
-        List<FilmDetailBean> list = this.filmMapper.queryFilmDetail(search);
-
-        PageInfo<FilmDetailBean> pageInfo = new PageInfo<>(list);
-        list = pageInfo.getList();
-        Map<String,Object> dataMap = new HashMap<>();
-
-        dataMap.put("data",list);
-        dataMap.put("count", pageInfo.getTotal());
-        dataMap.put("nowPage", pageInfo.getPageNum());
-        dataMap.put("totalPages",pageInfo.getPages());
+        FilmDetailBean bean = this.filmMapper.queryFilmDetail(param);
+        if (BaseUtil.isEmpty(bean)){
+            resultMap.setCode("500");
+            return resultMap;
+        }
+        List<StarBean> directorList = this.filmMapper.queryFilmDirector(film_id);
+        List<StarBean> scriptwriterList = this.filmMapper.queryFilmScriptwriter(film_id);
+        List<StarBean> starList = this.filmMapper.queryFilmStar(film_id);
+        bean.setDirectorList(directorList);
+        bean.setScriptwriterList(scriptwriterList);
+        bean.setStarList(starList);
         resultMap.setCode("200");
         resultMap.setMsg("请求成功");
-        resultMap.setData(dataMap);
+        resultMap.setData(bean);
+
         return resultMap;
     }
 

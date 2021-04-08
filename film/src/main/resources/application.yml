@@ -15,7 +15,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: movie
     password: movie
-    url: jdbc:mysql://mysql.huazai.vip:3306/movie?allowMultiQueries=true
+    url: jdbc:mysql://mysql.huazai.vip:3306/movie?allowMultiQueries=true&useSSL=false
 
 pagehelper:
   helper-dialect: mysql
