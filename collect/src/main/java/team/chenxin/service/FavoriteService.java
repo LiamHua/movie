@@ -17,9 +17,11 @@ public interface FavoriteService {
 
     List<Favorite> listAllFavorites(int user_id);
     void addFavorite(Favorite favorite);
-    boolean getFavorite(long fa_id, int user_id);
+    boolean getFavorite(String favorite_name, int user_id);
 
     void deleteFavorite(long fa_id);
 
     void modifyFavorite(long fa_id,String name);
+
+    boolean getFavoriteById(int fa_id, int user_id);
 }

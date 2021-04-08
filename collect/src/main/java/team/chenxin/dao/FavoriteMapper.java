@@ -21,7 +21,7 @@ import java.util.List;
 public interface FavoriteMapper {
     List<Favorite> listAllFavorites(@Param("user_id")int user_id);
 
-    Favorite getFavorite(@Param("fa_id") long fa_id,@Param("user_id") int user_id);
+    Favorite getFavorite(@Param("favorite_name") String fa_name,@Param("user_id") int user_id);
 
     void addFavorite(@Param("favorite") Favorite favorite);
 
@@ -29,4 +29,6 @@ public interface FavoriteMapper {
 
     void modifyFavorite(@Param("fa_id") long fa_id,
                         @Param("favorite_name")String name);
+
+    Favorite getFavoriteById(@Param("fa_id")int fa_id,@Param("user_id") int user_id);
 }
