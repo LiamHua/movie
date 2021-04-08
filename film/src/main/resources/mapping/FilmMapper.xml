@@ -2,30 +2,49 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="team.software.mapper.FilmMapper">
 
-    <resultMap id="FilmDetailBeanMap" type="FilmDetailBean">
-        <id property="id" column="id"/>
-        <result property="html_id" column="html_id"/>
-        <result property="translated_term" column="translated_term"/>
-        <result property="name" column="name"/>
-        <result property="cover" column="cover"/>
-        <result property="decade" column="decade"/>
-        <result property="language" column="language"/>
-        <result property="subtitle" column="subtitle"/>
-        <result property="release_time" column="release_time"/>
-        <result property="douban" column="douban"/>
-        <result property="length" column="length"/>
-        <result property="info" column="info"/>
-        <result property="link" column="link"/>
-        <result property="upload_time" column="upload_time"/>
-        <result property="hot" column="hot"/>
-        <result property="collect" column="collect"/>
-        <collection property="starList" ofType="StarBean">
-            <id property="id" column="star_id"/>
-            <result property="douban_id" column="douban_id"/>
-            <result property="CN_name" column="CN_name"/>
-            <result property="EN_name" column="EN_name"/>
-        </collection>
-    </resultMap>
+<!--    <resultMap id="FilmDetailBeanMap" type="FilmDetailBean">-->
+<!--    <id property="id" column="id"/>-->
+<!--    <result property="translated_term" column="translated_term"/>-->
+<!--    <result property="name" column="name"/>-->
+<!--    <result property="cover" column="cover"/>-->
+<!--    <result property="decade" column="decade"/>-->
+<!--    <result property="language" column="language"/>-->
+<!--    <result property="subtitle" column="subtitle"/>-->
+<!--    <result property="release_time" column="release_time"/>-->
+<!--    <result property="douban" column="douban"/>-->
+<!--    <result property="length" column="length"/>-->
+<!--    <result property="info" column="info"/>-->
+<!--    <result property="link" column="link"/>-->
+<!--    <result property="upload_time" column="upload_time"/>-->
+<!--    <result property="hot" column="hot"/>-->
+<!--    <result property="collect" column="collect"/>-->
+<!--    &lt;!&ndash;        地区&ndash;&gt;-->
+<!--    <result property="areas" column="areas"/>-->
+<!--    &lt;!&ndash;        目录&ndash;&gt;-->
+<!--    <result property="category" column="category"/>-->
+<!--&lt;!&ndash;        标签&ndash;&gt;-->
+<!--        <result property="tags" column="tags"/>-->
+
+<!--        &lt;!&ndash;        编剧&ndash;&gt;-->
+<!--    <collection property="scriptwriterList" ofType="StarBean">-->
+<!--        <id property="id" column="scriptwriter_id"/>-->
+<!--        <result property="CN_name" column="scriptwriter_CN_name"/>-->
+<!--        <result property="EN_name" column="scriptwriter_EN_name"/>-->
+<!--    </collection>-->
+<!--    &lt;!&ndash;        导演&ndash;&gt;-->
+<!--    <collection property="directorList" ofType="StarBean">-->
+<!--        <id property="id" column="director_id"/>-->
+<!--        <result property="CN_name" column="director_CN_name"/>-->
+<!--        <result property="EN_name" column="director_EN_name"/>-->
+<!--    </collection>-->
+<!--    &lt;!&ndash;        演员&ndash;&gt;-->
+<!--    <collection property="starList" ofType="StarBean">-->
+<!--        <id property="id" column="star_id"/>-->
+<!--        <result property="CN_name" column="star_CN_name"/>-->
+<!--        <result property="EN_name" column="star_EN_name"/>-->
+<!--    </collection>-->
+
+<!--</resultMap>-->
 
     <select id="queryFilm" parameterType="map" resultType="team.software.bean.FilmBean">
         SELECT
@@ -130,15 +149,14 @@
     </select>
 
 
-    <select id="queryFilmDetail" parameterType="map" resultMap="FilmDetailBeanMap">
+    <select id="queryFilmDetail" parameterType="map" resultType="team.software.bean.FilmDetailBean">
         SELECT
             film.id,
-            film.html_id,
             film.translated_term,
-            film.`name`,
+            film.name,
             film.cover,
             film.decade,
-            film.`language`,
+            film.language,
             film.subtitle,
             film.release_time,
             film.douban,
@@ -148,19 +166,78 @@
             film.upload_time,
             film.hot,
             film.collect,
-            GROUP_CONCAT( star.id ) AS star_id,
-            GROUP_CONCAT( star.douban_id ) AS douban_id,
-            GROUP_CONCAT( star.CN_name ) AS CN_name,
-            GROUP_CONCAT( star.EN_name ) AS EN_name
+            (
+                SELECT
+                    GROUP_CONCAT( area.name )
+                FROM
+                    film_area
+                        LEFT JOIN area ON area.id = film_area.area_id
+                WHERE
+                    film.id = film_area.film_id
+            ) AS areas,
+            (
+                SELECT
+                    GROUP_CONCAT( category.name)
+                FROM
+                    film_category
+                        LEFT JOIN category ON category.id = film_category.category_id
+                WHERE
+                    film.id = film_category.film_id
+            ) AS category,
+            (
+                SELECT
+                    GROUP_CONCAT( tag.name )
+                FROM
+                    film_tag
+                        LEFT JOIN tag ON tag.id = film_tag.tag_id
+                WHERE
+                    film.id = film_tag.film_id
+            ) AS tags
         FROM
             film
-                LEFT JOIN film_star ON film.id = film_star.film_id
-                LEFT JOIN star ON star.id = film_star.star_id
-        GROUP BY
-            film.id
+                LEFT JOIN html ON html.id = film.html_id
+        WHERE
+            film.id = #{id}
+          AND html.state = 1
     </select>
 
-    <select id="queryHotFilm" parameterType="map" resultMap="FilmDetailBeanMap">
+    <select id="queryFilmDirector" parameterType="string" resultType="team.software.bean.StarBean">
+        SELECT
+            star.id,
+            star.CN_name,
+            star.EN_name
+        FROM
+            film_director
+                LEFT JOIN star ON star.id = film_director.star_id
+        WHERE
+            film_director.film_id = #{id}
+    </select>
+
+    <select id="queryFilmScriptwriter" parameterType="string" resultType="team.software.bean.StarBean">
+        SELECT
+            star.id,
+            star.CN_name,
+            star.EN_name
+        FROM
+            film_scriptwriter
+                LEFT JOIN star ON star.id = film_scriptwriter.star_id
+        WHERE
+            film_scriptwriter.film_id = #{id}
+    </select>
+
+    <select id="queryFilmStar" parameterType="string" resultType="team.software.bean.StarBean">
+        SELECT
+            star.id,
+            star.CN_name,
+            star.EN_name
+        FROM
+            film_star
+                LEFT JOIN star ON star.id = film_star.star_id
+        WHERE
+            film_star.film_id = #{id}
+    </select>
+
+    <select id="queryHotFilm" parameterType="map" resultType="team.software.bean.FilmDetailBean">
         SELECT
             film.id,
             film.html_id,

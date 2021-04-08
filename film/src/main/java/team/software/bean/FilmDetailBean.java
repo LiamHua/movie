@@ -23,11 +23,6 @@ public class FilmDetailBean {
     private String id;
 
     /**
-     * html表主键
-     */
-    private String html_id;
-
-    /**
      * 电影译名
      */
     private String translated_term;
@@ -96,6 +91,30 @@ public class FilmDetailBean {
      * 收藏量
      */
     private Integer collect;
+
+    /**
+     * 地区
+     */
+    private String areas;
+    /**
+     * 目录
+     */
+    private String category;
+
+    /**
+     * 标签
+     */
+    private String tags;
+
+    /**
+     * 编剧
+     */
+    private List<StarBean> scriptwriterList = new ArrayList<>();
+
+    /**
+     * 导演
+     */
+    private List<StarBean> directorList = new ArrayList<>();
 
     /**
      * 电影对应多个演员
