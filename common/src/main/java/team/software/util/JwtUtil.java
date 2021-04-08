@@ -16,7 +16,7 @@ public class JwtUtil {
     /**
      * Token过期时间
      */
-    private static final int TTL_MILLIS = 60*60*24*7;
+    private static final int TTL_MILLIS = 1000*60*60*24*7;
     //private static final int TTL_MILLIS = 10;
     /**
      * 生成签名密钥

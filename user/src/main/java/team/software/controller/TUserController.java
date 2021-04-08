@@ -89,12 +89,6 @@ public class TUserController {
                 HashMap<String, Object>  userSubject = new HashMap<>();
                 userSubject.put("id", user.getId());
                 userSubject.put("username", user.getUsername());
-                userSubject.put("nickname", user.getNickname());
-                userSubject.put("head", user.getHead());
-                userSubject.put("sex", user.getSex());
-                userSubject.put("birthday", user.getBirthday());
-                userSubject.put("info", user.getInfo());
-                userSubject.put("last_time", user.getLastTime());
                 String token = JwtUtil.createJWT(userSubject);
                 HashMap<String, Object> data = new HashMap<>(16);
                 data.put("token", token);
@@ -182,14 +176,29 @@ public class TUserController {
     }
 
     /**
-     * 单条/批量删除数据
-     *
-     * @param idList 主键集合
+     * 获取用户信息
+     * @param
      * @return 删除结果
      */
-    @DeleteMapping
-    public R<Boolean> delete(@RequestParam("idList") List<Long> idList) {
-        return R.ok(tUserServiceImpl.removeByIds(idList));
+    @RequestMapping("/info")
+    public R<HashMap<String, Map>> delete(HttpServletRequest request) {
+        Integer userId = (Integer) request.getAttribute("user_id");
+        String username = (String) request.getAttribute("username");
+        log.info(username + "正在获取用户信息");
+        TUser user = tUserServiceImpl.getOne(Wrappers.<TUser>lambdaQuery().eq(TUser::getId, userId));
+        log.info(username + "获取用户信息成功！");
+        HashMap<String, Object>  userInfo = new HashMap<>(16);
+        userInfo.put("id", user.getId());
+        userInfo.put("username", user.getUsername());
+        userInfo.put("nickname", user.getNickname());
+        userInfo.put("head", user.getHead());
+        userInfo.put("sex", user.getSex());
+        userInfo.put("birthday", user.getBirthday());
+        userInfo.put("info", user.getInfo());
+        userInfo.put("last_time", user.getLastTime());
+        HashMap<String, Map> data = new HashMap<>();
+        data.put("userInfo", userInfo);
+        return R.restResult(data, UserCode.GET_USERINFO_SUCCESS);
     }
 
     /**
