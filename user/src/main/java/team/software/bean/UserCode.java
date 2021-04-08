@@ -34,7 +34,9 @@ public enum UserCode implements IErrorCode {
     // 获取用户信息成功
     GET_USERINFO_SUCCESS(10013, "获取用户信息成功"),
     // token失效
-    TOKEN_ERROR(10014, "token已失效");
+    TOKEN_ERROR(10014, "token已失效"),
+    // 无权访问
+    UNAUTHORIZATION(10015, "无权访问");
 
     private final long code;
     private final String msg;
