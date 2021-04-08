@@ -59,7 +59,6 @@ public class FavoriteController {
     {
             Favorite favorite = new Favorite();
             favorite.setCreateTime(TimeUtil.getTimeNow());
-            favorite.setFavoriteId(IDUtil.next());
             favorite.setUserId((int) request.getAttribute("user_id"));
             if(favoriteService.getFavorite(name,favorite.getUserId()))
             {

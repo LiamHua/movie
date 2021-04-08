@@ -24,33 +24,33 @@ public class CollectServiceImpl implements CollectService {
     private CollectionMapper collectionMapper;
 
     @Override
-    public List<Collect> getColletionsByFaid(long fa_id) {
+    public List<Collect> getColletionsByFaid(int fa_id) {
         return collectionMapper.getColletionsByFaid(fa_id);
     }
 
     @Override
-    public boolean getCollectionByFaiIddFilmId(long fa_id, int film_id) {
+    public boolean getCollectionByFaiIddFilmId(int fa_id, int film_id) {
         int i=collectionMapper.getCollect(fa_id,film_id);
         return i != 0;
     }
 
     @Override
-    public void addCollection(long fa_id, int film_id, String collect_time) {
+    public void addCollection(int fa_id, int film_id, String collect_time) {
         collectionMapper.addCollection(fa_id,film_id,collect_time);
     }
 
     @Override
-    public void copyCollection(long fa_id, int film_id,String collect_time) {
+    public void copyCollection(int fa_id, int film_id,String collect_time) {
         collectionMapper.copyCollection(fa_id,film_id,collect_time);
     }
 
     @Override
-    public void deleteCollection(long fa_id, int film_id) {
+    public void deleteCollection(int fa_id, int film_id) {
         collectionMapper.deleteCollection(fa_id,film_id);
     }
 
     @Override
-    public void moveCollection(long fa_id, int film_id) {
+    public void moveCollection(int fa_id, int film_id) {
         collectionMapper.moveCollection(fa_id, film_id);
     }
 
