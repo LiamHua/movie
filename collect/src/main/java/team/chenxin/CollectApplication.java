@@ -18,8 +18,8 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 @SpringBootApplication
 @MapperScan("team.chenxin.dao")
 @ServletComponentScan
-public class Main {
+public class CollectApplication {
     public static void main(String[] args) {
-        SpringApplication.run(Main.class, args);
+        SpringApplication.run(CollectApplication.class, args);
     }
 }
