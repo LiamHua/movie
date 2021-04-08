@@ -30,7 +30,9 @@ public enum UserCode implements IErrorCode {
     // 密码修改成功
     UPDATE_PASSWORD_SUCCESS(10011, "密码修改成功"),
     // 密码修改失败
-    UPDATE_PASSWORD_FAILED(10012, "密码修改失败");
+    UPDATE_PASSWORD_FAILED(10012, "密码修改失败"),
+    // 获取用户信息成功
+    GET_USERINFO_SUCCESS(10013, "获取用户信息成功");
 
     private final long code;
     private final String msg;

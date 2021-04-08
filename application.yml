@@ -5,6 +5,11 @@ spring:
     password: 123456
     port: 6379
     timeout: 10000
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: movie
+    password: movie
+    url: jdbc:mysql://mysql.huazai.vip:3306/movie?allowMultiQueries=true
 
 redis:
   maxIdle: 300
