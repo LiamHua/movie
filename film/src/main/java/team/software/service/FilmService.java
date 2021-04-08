@@ -149,6 +149,9 @@ public class FilmService {
             resultMap.setCode("500");
             return resultMap;
         }
+        String info = bean.getInfo();
+        info = info.replaceAll("<br/>","</p><p>");
+        bean.setInfo(info);
         List<StarBean> directorList = this.filmMapper.queryFilmDirector(film_id);
         List<StarBean> scriptwriterList = this.filmMapper.queryFilmScriptwriter(film_id);
         List<StarBean> starList = this.filmMapper.queryFilmStar(film_id);
