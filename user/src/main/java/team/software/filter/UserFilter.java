@@ -45,7 +45,7 @@ public class UserFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        HttpServletRequest request = (HttpServletRequest)servletRequest;
+        HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         response.setHeader("Content-type", "text/html;charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
@@ -54,29 +54,25 @@ public class UserFilter implements Filter {
         if (!isNoFilter(request)) {
             String token = request.getHeader("Authorization");
             if (token != null) {
-                try {
-                    Claims claims = JwtUtil.parseJWT(token);
-                    if (claims != null) {
-                        log.info(claims.toString());
-                        String username = (String)claims.get("username");
-                        int id = (int) claims.get("id");
-                        // 从Redis中校验token
-                        String redisToken = (String) redisUtil.get(username);
-                        if (redisToken == null || !redisToken.equals(token)) {
-                            response.getWriter().write(JSON.toJSONString(R.restResult("", UserCode.TOKEN_ERROR)));
-                            return;
-                        }
-                        log.info("当前访问的用户为" + username);
-                        request.setAttribute("user_id", id);
-                        request.setAttribute("username", username);
-
-                        filterChain.doFilter(request, servletResponse);
-                    } else {
+                Claims claims = JwtUtil.parseJWT(token);
+                if (claims != null) {
+                    log.info(claims.toString());
+                    String username = (String) claims.get("username");
+                    int id = (int) claims.get("id");
+                    // 从Redis中校验token
+                    String redisToken = (String) redisUtil.get(username);
+                    if (redisToken == null || !redisToken.equals(token)) {
                         response.getWriter().write(JSON.toJSONString(R.restResult("", UserCode.TOKEN_ERROR)));
                         return;
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                    log.info("当前访问的用户为" + username);
+                    request.setAttribute("user_id", id);
+                    request.setAttribute("username", username);
+
+                    filterChain.doFilter(request, servletResponse);
+                } else {
+                    response.getWriter().write(JSON.toJSONString(R.restResult("", UserCode.TOKEN_ERROR)));
+                    return;
                 }
             }
         } else {
