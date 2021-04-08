@@ -13,7 +13,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * @Description TODO 用户收藏
+ * @Description TODO 用户电影收藏
  * @PACKAGE_NAME: team.chenxin.collect
  * @NAME: Collection
  * @USER: Chenxin
