@@ -13,6 +13,7 @@ import com.baomidou.mybatisplus.extension.api.R;
 import org.springframework.web.bind.annotation.*;
 import team.software.util.BaseUtil;
 import team.software.util.JwtUtil;
+import team.software.util.RedisUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
@@ -37,6 +38,9 @@ public class TUserController {
     @Autowired
     @Qualifier("TUserServiceImpl")
     private TUserService tUserServiceImpl;
+
+    @Autowired
+    private RedisUtil redisUtil;
 
     /**
      * 用户登陆
@@ -71,11 +75,18 @@ public class TUserController {
             } else {
                 // 登陆成功
                 log.info(username + "用户登陆成功！");
+                HashMap<String, Object> data = new HashMap<>(16);
+                String token = (String) redisUtil.get(username);
+                if (token != null) {
+                    data.put("token", token);
+                    return R.restResult(data,UserCode.LOGIN_SUCCESS);
+                }
                 HashMap<String, Object>  userSubject = new HashMap<>();
                 userSubject.put("id", user.getId());
                 userSubject.put("username", user.getUsername());
-                String token = JwtUtil.createJWT(userSubject);
-                HashMap<String, Object> data = new HashMap<>(16);
+                token = JwtUtil.createJWT(userSubject);
+                // 将token存入Redis
+                redisUtil.set(username, token, JwtUtil.TTL_MILLIS/1000);
                 data.put("token", token);
                 return R.restResult(data,UserCode.LOGIN_SUCCESS);
             }
@@ -136,7 +147,7 @@ public class TUserController {
      * @return 修改结果
      */
     @PutMapping("/updatePassword")
-    public R<Boolean> update(@RequestParam String password, HttpServletRequest request) {
+    public R<HashMap<String, Object>> update(@RequestParam String password, HttpServletRequest request) {
         String username = (String)request.getAttribute("username");
         password = password.trim();
         log.info(username + "正在修改密码...");
@@ -153,7 +164,18 @@ public class TUserController {
         boolean flag = tUserServiceImpl.update(Wrappers.<TUser>lambdaUpdate().set(TUser::getPassword, password));
         if (flag) {
             log.info(username + "修改密码成功！");
-            return R.restResult(null, UserCode.UPDATE_PASSWORD_SUCCESS);
+            // 删除Redis中的token
+            redisUtil.delete(username);
+            // 重新生成 token
+            HashMap<String, Object>  userSubject = new HashMap<>();
+            userSubject.put("id", user.getId());
+            userSubject.put("username", user.getUsername());
+            String token = JwtUtil.createJWT(userSubject);
+            // 将token存入Redis
+            redisUtil.set(username, token, JwtUtil.TTL_MILLIS/1000);
+            HashMap<String, Object> data = new HashMap<>();
+            data.put("token", token);
+            return R.restResult(data, UserCode.UPDATE_PASSWORD_SUCCESS);
         } else {
             log.info(username + "密码修改失败！");
             return R.restResult(null, UserCode.UPDATE_PASSWORD_FAILED);

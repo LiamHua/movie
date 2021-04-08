@@ -11,6 +11,12 @@ server:
 spring:
   application:
     name: spider
+  redis:
+    database: 1
+    host: redis.huazai.vip
+    password: LZHlzh$$
+    port: 6379
+    timeout: 10000
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: movie
