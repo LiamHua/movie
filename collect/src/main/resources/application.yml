@@ -28,6 +28,8 @@ mybatis:
   #Mybatis Mapper对应的xml文件位置
   type-aliases-package: team.chenxin.bean
   mapper-locations: classpath*:mapper/*.xml
+  configuration:
+    mapUnderscoreToCamelCase: true
 #  global-config:
 #    #关闭mp3.0自带的banner
 #    banner: false

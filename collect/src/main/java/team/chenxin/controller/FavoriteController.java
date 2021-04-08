@@ -58,16 +58,16 @@ public class FavoriteController {
                                                 HttpServletRequest request)
     {
             Favorite favorite = new Favorite();
-            favorite.setCreate_time(TimeUtil.getTimeNow());
-            favorite.setFavorite_id(IDUtil.next());
-            favorite.setUser_id((Integer) request.getAttribute("user_id"));
-            if(favoriteService.getFavorite(favorite.getFavorite_id(),favorite.getUser_id()))
+            favorite.setCreateTime(TimeUtil.getTimeNow());
+            favorite.setFavoriteId(IDUtil.next());
+            favorite.setUserId((Integer) request.getAttribute("user_id"));
+            if(favoriteService.getFavorite(favorite.getFavoriteId(),favorite.getUserId()))
             {
                 message.setStatus("fail");
                 message.setMsg("收藏已经存在");
                 return ResponseEntity.ok(message);
             }
-            favorite.setFavorite_name(name);
+            favorite.setFavoriteName(name);
             favoriteService.addFavorite(favorite);
             message.setStatus("succeed");
             message.setMsg("添加成功");

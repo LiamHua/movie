@@ -1,7 +1,9 @@
 package team.chenxin.bean;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
@@ -17,12 +19,13 @@ import java.io.Serializable;
  **/
 @Data
 @Repository
-@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Favorite implements Serializable {
     int id;
-    int user_id;
-    long favorite_id;
-    String favorite_name;
-    String create_time;
+    int userId;
+    long favoriteId;
+    String favoriteName;
+    String createTime;
 
 }
