@@ -1,11 +1,9 @@
 package team.chenxin.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team.chenxin.bean.Collect;
 import team.chenxin.message.Message;
-import team.chenxin.message.SucceedMessage;
 import team.chenxin.service.CollectService;
 import team.chenxin.utils.TimeUtil;
 
@@ -37,9 +35,9 @@ public class CollectionController {
     * @Param: [favorite_id]
     * @return: org.springframework.http.ResponseEntity<java.util.List<team.chenxin.bean.Collect>>
     * @Date: 2021/4/7
-    */ 
+    */
     @GetMapping("/getCollection/{favorite_id}")
-    public ResponseEntity<List<Collect>> getColletionsByFaid(@PathVariable(value = "favorite_id") long favorite_id)
+    public ResponseEntity<List<Collect>> getColletionsByFaid(@PathVariable(value = "favorite_id") int favorite_id)
     {
         List<Collect> collects=collectService.getColletionsByFaid(favorite_id);
         return ResponseEntity.ok(collects);
@@ -50,9 +48,9 @@ public class CollectionController {
     * @Param: [fa_id, film_id]
     * @return: org.springframework.http.ResponseEntity<team.chenxin.message.Message>
     * @Date: 2021/4/7
-    */ 
+    */
     @PostMapping("/addCollection")
-    public ResponseEntity<Message> addCollection(@RequestParam(value = "favorite_id")long fa_id,
+    public ResponseEntity<Message> addCollection(@RequestParam(value = "favorite_id")int fa_id,
                                                  @RequestParam(value = "film_id")int film_id)
     {
         if (collectService.getCollectionByFaiIddFilmId(fa_id, film_id))
@@ -73,9 +71,9 @@ public class CollectionController {
     * @Param: [fa_id, film_id]
     * @return: org.springframework.http.ResponseEntity<team.chenxin.message.Message>
     * @Date: 2021/4/7
-    */ 
+    */
     @PostMapping("/copyCollection")
-    public ResponseEntity<Message> copyCollection(@RequestParam("favorite_id")long fa_id,
+    public ResponseEntity<Message> copyCollection(@RequestParam("favorite_id")int fa_id,
                                                @RequestParam("film_id")int film_id)
     {
         if (collectService.getCollectionByFaiIddFilmId(fa_id, film_id))
@@ -95,9 +93,9 @@ public class CollectionController {
     * @Param: [fa_id, film_id]
     * @return: org.springframework.http.ResponseEntity<team.chenxin.message.Message>
     * @Date: 2021/4/7
-    */ 
+    */
     @PostMapping("/deleteCollection")
-    public ResponseEntity<Message> deleteCollection(@RequestParam("favorite_id")long fa_id,
+    public ResponseEntity<Message> deleteCollection(@RequestParam("favorite_id")int fa_id,
                                                  @RequestParam("film_id")int film_id)
     {
         if (collectService.getCollectionByFaiIddFilmId(fa_id, film_id))
@@ -120,9 +118,9 @@ public class CollectionController {
     * @Param: [fa_id, film_id]
     * @return: org.springframework.http.ResponseEntity<team.chenxin.message.Message>
     * @Date: 2021/4/7
-    */ 
+    */
     @PostMapping("/moveCollection")
-    public ResponseEntity<Message> moveCollection(@RequestParam("favorite_id")long fa_id,
+    public ResponseEntity<Message> moveCollection(@RequestParam("favorite_id")int fa_id,
                                                @RequestParam("film_id")int film_id)
     {
         if (collectService.getCollectionByFaiIddFilmId(fa_id, film_id))

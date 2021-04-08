@@ -41,12 +41,12 @@ public class FavoriteServiceImpl implements FavoriteService {
     }
 
     @Override
-    public void deleteFavorite(long fa_id) {
+    public void deleteFavorite(int fa_id) {
         favoriteMapper.deleteFavorite(fa_id);
     }
 
     @Override
-    public void modifyFavorite(long fa_id,String name) {
+    public void modifyFavorite(int fa_id,String name) {
         favoriteMapper.modifyFavorite(fa_id,name);
     }
 

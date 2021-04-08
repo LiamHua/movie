@@ -24,7 +24,6 @@ import java.io.Serializable;
 public class Favorite implements Serializable {
     int id;
     int userId;
-    long favoriteId;
     String favoriteName;
     String createTime;
 

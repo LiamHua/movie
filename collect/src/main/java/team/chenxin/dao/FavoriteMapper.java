@@ -25,9 +25,9 @@ public interface FavoriteMapper {
 
     void addFavorite(@Param("favorite") Favorite favorite);
 
-    void deleteFavorite(@Param("fa_id") long fa_id);
+    void deleteFavorite(@Param("fa_id") int fa_id);
 
-    void modifyFavorite(@Param("fa_id") long fa_id,
+    void modifyFavorite(@Param("fa_id") int fa_id,
                         @Param("favorite_name")String name);
 
     Favorite getFavoriteById(@Param("fa_id")int fa_id,@Param("user_id") int user_id);

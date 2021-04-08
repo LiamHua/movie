@@ -13,22 +13,22 @@
 
     <select id="getFavoriteById" resultType="team.chenxin.bean.Favorite">
         select * from favorite
-        where favorite_id=#{fa_id} and user_id=#{user_id}
+        where id=#{fa_id} and user_id=#{user_id}
     </select>
 
     <insert id="addFavorite">
-        insert into favorite (user_id,favorite_id,favorite_name,create_time)
-        values (#{favorite.userId},#{favorite.favoriteId},#{favorite.favoriteName},#{favorite.createTime})
+        insert into favorite (user_id,favorite_name,create_time)
+        values (#{favorite.userId},#{favorite.favoriteName},#{favorite.createTime})
     </insert>
 
     <delete id="deleteFavorite">
         delete from favorite
-        where favorite_id=#{fa_id}
+        where id=#{fa_id}
     </delete>
 
     <update id="modifyFavorite">
         update favorite
         set favorite_name=#{favorite_name}
-        where favorite_id=#{fa_id}
+        where id=#{fa_id}
     </update>
 </mapper>
