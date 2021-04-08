@@ -1,89 +1,113 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="team.software.mapper.FilmMapper">
+
+    <select id="queryGenres" resultType="team.software.bean.BaseBean">
+        SELECT
+            category.id,
+            category.name
+        FROM
+            category
+    </select>
+
+    <select id="queryAreas" parameterType="list" resultType="team.software.bean.BaseBean">
+        SELECT
+        area.id,
+        area.name
+        FROM
+        area
+        WHERE
+        area.name IN
+        <foreach collection="list" open="(" separator="," close=")" index="index" item="item">
+            #{item}
+        </foreach>
+    </select>
+
+
     <select id="queryFilm" parameterType="map" resultType="team.software.bean.FilmBean">
         SELECT
-            film.id,
-            film.name,
-            film.cover,
-            film.douban,
-            (   SELECT
-                    GROUP_CONCAT(star.CN_name)
-                FROM
-                    film_star
-                LEFT JOIN star ON film_star.star_id = star.id
-                WHERE
-                    film_star.film_id = film.id
-            ) as casts,
-            (	SELECT
-                    GROUP_CONCAT(star.CN_name)
-                FROM
-                    film_director
-                LEFT JOIN star ON film_director.star_id=star.id
-                WHERE
-                film_director.film_id = film.id
-            ) as directors
+        film.name,
+        film.id,
+        film.cover,
+        film.douban,
+        (   SELECT
+        GROUP_CONCAT(star.CN_name)
         FROM
-            film
-            LEFT JOIN film_category ON film_category.film_id = film.id
-            LEFT JOIN film_area ON film_area.film_id = film.id
-            LEFT JOIN film_tag ON film_tag.film_id = film.id
-            LEFT JOIN film_director ON film_director.film_id = film.id
-            LEFT JOIN html ON html.id = film.html_id
+        film_star
+        LEFT JOIN star ON film_star.star_id = star.id
         WHERE
-            1 = 1
-            AND html.state = 1
-            <if test="genres != null and !genres.isEmpty()">
-                AND film_category.category_id IN
-                <foreach collection="genres" open="(" close=")" index="index" item="item" separator=",">
-                    #{item}
-                </foreach>
-            </if>
-            <if test="areas != null and !areas.isEmpty()">
-                AND film_area.area_id IN
-                <foreach collection="areas" open="(" close=")" index="index" item="item" separator=",">
-                    #{item}
-                </foreach>
-            </if>
-            <if test="tags != null and !tags.isEmpty()">
-                AND film_tag.tag_id IN
-                <foreach collection="tags" open="(" close=")" index="index" item="item" separator=",">
-                    #{item}
-                </foreach>
-            </if>
-            <if test="decade != null and decade != ''">
-                AND
-                <choose>
-                    <when test="decade == '2021'">
-                        film.decade = '2021'
-                    </when>
-                    <when test="decade == '2020'">
-                        film.decade = '2020'
-                    </when>
-                    <when test="decade == '2019'">
-                        film.decade = '2019'
-                    </when>
-                    <when test="decade == '2018'">
-                        film.decade = '2018'
-                    </when>
-                    <when test="decade == '2010年代'">
-                        film.decade <![CDATA[ >= ]]> '2010'
-                        film.decade <![CDATA[ < ]]> '2020'
-                    </when>
-                    <when test="decade == '2000年代'">
-                        film.decade <![CDATA[ >= ]]> '2000'
-                        film.decade <![CDATA[ < ]]> '2010'
-                    </when>
-                    <when test="decade == '更早'">
-                        film.decade <![CDATA[ < ]]> '2000'
-                    </when>
-                    <otherwise>
-                         1 = 1
-                    </otherwise>
-                </choose>
-            </if>
-            GROUP BY film.id
-            <if test="sort != null and sort != ''">
+        film_star.film_id = film.id
+        ) as casts,
+        (	SELECT
+        GROUP_CONCAT(star.CN_name)
+        FROM
+        film_director
+        LEFT JOIN star ON film_director.star_id=star.id
+        WHERE
+        film_director.film_id = film.id
+        ) as directors
+        FROM
+        film
+        LEFT JOIN film_category ON film_category.film_id = film.id
+        LEFT JOIN film_area ON film_area.film_id = film.id
+        LEFT JOIN film_tag ON film_tag.film_id = film.id
+        LEFT JOIN film_director ON film_director.film_id = film.id
+        LEFT JOIN html ON html.id = film.html_id
+        WHERE
+        1 = 1
+        AND html.state = 1
+        <if test="genres != null and !genres.isEmpty()">
+            AND film_category.category_id IN
+            <foreach collection="genres" open="(" close=")" index="index" item="item" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        <if test="areas != null and !areas.isEmpty()">
+            AND film_area.area_id IN
+            <foreach collection="areas" open="(" close=")" index="index" item="item" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        <if test="tags != null and !tags.isEmpty()">
+            AND film_tag.tag_id IN
+            <foreach collection="tags" open="(" close=")" index="index" item="item" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        <if test="decade != null and decade != ''">
+            AND
+            <choose>
+                <when test="decade == '2021'">
+                    film.decade = '2021'
+                </when>
+                <when test="decade == '2020'">
+                    film.decade = '2020'
+                </when>
+                <when test="decade == '2019'">
+                    film.decade = '2019'
+                </when>
+                <when test="decade == '2018'">
+                    film.decade = '2018'
+                </when>
+                <when test="decade == '2010年代'">
+                    film.decade <![CDATA[ >= ]]> 2010
+                    AND film.decade <![CDATA[ < ]]> 2020
+                </when>
+                <when test="decade == '2000年代'">
+                    film.decade <![CDATA[ >= ]]> 2000
+                    AND film.decade <![CDATA[ < ]]> 2010
+                </when>
+                <when test="decade == '更早'">
+                    film.decade <![CDATA[ < ]]> 2000
+                </when>
+                <otherwise>
+                    1 = 1
+                </otherwise>
+            </choose>
+        </if>
+        GROUP BY film.id
+        <choose>
+            <when test="sort != null and sort != ''">
                 ORDER BY
                 <choose>
                     <when test="sort == 'hot'">
@@ -95,14 +119,18 @@
                     <when test="sort == 'collect'">
                         film.collect DESC
                     </when>
-                    <when test="sort == 'release_time'">
+                    <when test="sort == 'releaseDate'">
                         film.release_time DESC
                     </when>
                     <otherwise>
                         1 = 1
                     </otherwise>
                 </choose>
-            </if>
+            </when>
+            <otherwise>
+                ORDER BY film.hot DESC
+            </otherwise>
+        </choose>
     </select>
 
 

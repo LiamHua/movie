@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import team.software.bean.*;
 import team.software.mapper.FilmMapper;
 import team.software.util.BaseUtil;
+import team.software.util.RedisUtil;
 
 import java.util.*;
 
@@ -21,6 +22,29 @@ public class FilmService {
 
     @Autowired
     private FilmMapper filmMapper;
+
+    @Autowired
+    private RedisUtil redisUtil;
+
+    public ResultMap genres() {
+        List<BaseBean> genresList = (List<BaseBean>) this.redisUtil.get("genres");
+        if (BaseUtil.isEmptyList(genresList)){
+            genresList = this.filmMapper.queryGenres();
+            this.redisUtil.set("genres",genresList);
+        }
+        return new ResultMap().OK(genresList);
+    }
+
+    public ResultMap areas() {
+        List<BaseBean> areasList = (List<BaseBean>) this.redisUtil.get("areas");
+        if (BaseUtil.isEmptyList(areasList)){
+            String[] area = {"中国大陆","欧美","美国","中国香港","中国台湾","日本","韩国","英国","法国","德国"
+                    ,"意人利","西班牙","印度","泰国","俄罗斯","伊朗","加拿大","澳大利亚","爱尔兰","瑞典","巴西","丹麦"};
+            areasList = this.filmMapper.queryAreas(Arrays.asList(area));
+            this.redisUtil.set("areas",areasList);
+        }
+        return new ResultMap().OK(areasList);
+    }
 
     /**
      * 处理前端传来的搜索参数
