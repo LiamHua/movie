@@ -52,22 +52,25 @@ public class FavoriteController {
     * @return: org.springframework.http.ResponseEntity<team.chenxin.message.Message>
     * @Date: 2021/4/7
     */
+
     @PostMapping("/addFavorite")
-    public ResponseEntity<Message> addFavorite( @RequestBody Favorite favorite)
+    public ResponseEntity<Message> addFavorite( @RequestParam(value = "favorite_name") String name,
+                                                HttpServletRequest request)
     {
-        System.out.println(favorite);
-        if (favoriteService.getFavorite(favorite.getFavorite_id(), favorite.getUser_id()))
-        {
-            message.setStatus("fail");
-            message.setMsg("收藏已存在");
-        } else
-        {
+            Favorite favorite = new Favorite();
             favorite.setCreate_time(TimeUtil.getTimeNow());
             favorite.setFavorite_id(IDUtil.next());
+            favorite.setUser_id((Integer) request.getAttribute("user_id"));
+            if(favoriteService.getFavorite(favorite.getFavorite_id(),favorite.getUser_id()))
+            {
+                message.setStatus("fail");
+                message.setMsg("收藏已经存在");
+                return ResponseEntity.ok(message);
+            }
+            favorite.setFavorite_name(name);
             favoriteService.addFavorite(favorite);
             message.setStatus("succeed");
             message.setMsg("添加成功");
-        }
         return ResponseEntity.ok(message);
     }
 
