@@ -36,8 +36,8 @@ public class FavoriteServiceImpl implements FavoriteService {
     }
 
     @Override
-    public boolean getFavorite(long fa_id, int user_id) {
-        return favoriteMapper.getFavorite(fa_id,user_id)!=null;
+    public boolean getFavorite(String favorite_name, int user_id) {
+        return favoriteMapper.getFavorite(favorite_name,user_id)!=null;
     }
 
     @Override
@@ -48,5 +48,10 @@ public class FavoriteServiceImpl implements FavoriteService {
     @Override
     public void modifyFavorite(long fa_id,String name) {
         favoriteMapper.modifyFavorite(fa_id,name);
+    }
+
+    @Override
+    public boolean getFavoriteById(int fa_id, int user_id) {
+        return favoriteMapper.getFavoriteById(fa_id,user_id)!=null;
     }
 }

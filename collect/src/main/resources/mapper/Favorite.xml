@@ -8,7 +8,12 @@
 
     <select id="getFavorite" resultType="team.chenxin.bean.Favorite">
         select * from favorite
-        where user_id=#{user_id} and favorite_id=#{fa_id}
+        where favorite_name=#{favorite_name} and user_id=#{user_id}
+    </select>
+
+    <select id="getFavoriteById" resultType="team.chenxin.bean.Favorite">
+        select * from favorite
+        where favorite_id=#{fa_id} and user_id=#{user_id}
     </select>
 
     <insert id="addFavorite">

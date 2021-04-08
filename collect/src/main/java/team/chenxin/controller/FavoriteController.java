@@ -60,8 +60,8 @@ public class FavoriteController {
             Favorite favorite = new Favorite();
             favorite.setCreateTime(TimeUtil.getTimeNow());
             favorite.setFavoriteId(IDUtil.next());
-            favorite.setUserId((Integer) request.getAttribute("user_id"));
-            if(favoriteService.getFavorite(favorite.getFavoriteId(),favorite.getUserId()))
+            favorite.setUserId((int) request.getAttribute("user_id"));
+            if(favoriteService.getFavorite(name,favorite.getUserId()))
             {
                 message.setStatus("fail");
                 message.setMsg("收藏已经存在");
@@ -85,7 +85,7 @@ public class FavoriteController {
                                                   HttpServletRequest request)
     {
         int user_id = (int) request.getAttribute("user_id");
-        if (favoriteService.getFavorite(fa_id,user_id))
+        if (favoriteService.getFavoriteById(fa_id,user_id))
         {
             favoriteService.deleteFavorite(fa_id);
             message.setStatus("succeed");
@@ -110,7 +110,7 @@ public class FavoriteController {
                                                   HttpServletRequest request)
     {
         int user_id = (int) request.getAttribute("user_id");
-        if (favoriteService.getFavorite(fa_id,user_id))
+        if (favoriteService.getFavoriteById(fa_id,user_id))
         {
             favoriteService.modifyFavorite(fa_id,name);
             message.setStatus("succeed");
