@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import team.chenxin.bean.Collect;
+import team.chenxin.bean.FilmPage;
 
 import java.util.List;
 
@@ -21,6 +22,8 @@ import java.util.List;
 public interface CollectionMapper {
 
     List<Collect> getColletionsByFaid(@Param("fa_id") int fa_id);
+
+    List<FilmPage> getFilmPageByFaid(@Param("fa_id") int fa_id);
 
     int getCollect(@Param("fa_id") int fa_id,
                        @Param("film_id") int film_id);

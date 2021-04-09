@@ -3,6 +3,7 @@ package team.chenxin.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team.chenxin.bean.Collect;
+import team.chenxin.bean.FilmPage;
 import team.chenxin.message.Message;
 import team.chenxin.service.CollectService;
 import team.chenxin.utils.TimeUtil;
@@ -37,10 +38,10 @@ public class CollectionController {
     * @Date: 2021/4/7
     */
     @GetMapping("/getCollection/{favorite_id}")
-    public ResponseEntity<List<Collect>> getColletionsByFaid(@PathVariable(value = "favorite_id") int favorite_id)
+    public ResponseEntity<List<FilmPage>> getColletionsByFaid(@PathVariable(value = "favorite_id") int favorite_id)
     {
-        List<Collect> collects=collectService.getColletionsByFaid(favorite_id);
-        return ResponseEntity.ok(collects);
+        List<FilmPage> filmPages=collectService.getFilmByFaid(favorite_id);
+        return ResponseEntity.ok(filmPages);
     }
 
     /**

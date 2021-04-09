@@ -1,6 +1,7 @@
 package team.chenxin.service;
 
 import team.chenxin.bean.Collect;
+import team.chenxin.bean.FilmPage;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ import java.util.List;
 public interface CollectService {
 
     List<Collect> getColletionsByFaid(int fa_id);
+    List<FilmPage> getFilmByFaid(int fa_id);
     boolean getCollectionByFaiIddFilmId(int fa_id, int film_id);
     void addCollection(int fa_id,int film_id,String collect_time);
     void copyCollection(int fa_id,int film_id,String collect_time);

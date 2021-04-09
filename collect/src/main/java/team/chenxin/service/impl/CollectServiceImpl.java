@@ -3,6 +3,7 @@ package team.chenxin.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team.chenxin.bean.Collect;
+import team.chenxin.bean.FilmPage;
 import team.chenxin.dao.CollectionMapper;
 import team.chenxin.service.CollectService;
 
@@ -26,6 +27,11 @@ public class CollectServiceImpl implements CollectService {
     @Override
     public List<Collect> getColletionsByFaid(int fa_id) {
         return collectionMapper.getColletionsByFaid(fa_id);
+    }
+
+    @Override
+    public List<FilmPage> getFilmByFaid(int fa_id) {
+        return collectionMapper.getFilmPageByFaid(fa_id);
     }
 
     @Override

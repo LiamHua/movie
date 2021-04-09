@@ -9,6 +9,7 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.annotation.WebInitParam;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
@@ -46,7 +47,6 @@ public class UserFilter implements Filter {
                         log.info("当前访问的用户为" + claims.get("username"));
                         request.setAttribute("user_id", claims.get("id"));
                         request.setAttribute("username", claims.get("username"));
-
                         filterChain.doFilter(request, servletResponse);
                     }
                 } catch (Exception e) {

@@ -43,6 +43,7 @@ public class FavoriteController {
     {
         int user_id = (int) request.getAttribute("user_id");
         List<Favorite> favorites = favoriteService.listAllFavorites(user_id);
+        System.out.println("查询成功");
         return ResponseEntity.ok(favorites);
     }
 

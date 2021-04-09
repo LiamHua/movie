@@ -9,6 +9,14 @@
         order by id asc
     </select>
 
+    <select id="getFilmPageByFaid" resultType="team.chenxin.bean.FilmPage">
+        select collect.id,collect.film_id,collect.favorite_id,collect.collect_time,film.name,film.cover
+        from collect
+        left join film
+        on collect.film_id=film.id
+        where favorite_id=#{fa_id}
+    </select>
+
     <insert id="addCollection" keyColumn="id" keyProperty="id">
         insert into `collect` (film_id,favorite_id,collect_time)
         values (#{film_id},#{fa_id},#{collect_time})
