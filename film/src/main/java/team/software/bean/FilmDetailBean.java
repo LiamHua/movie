@@ -25,7 +25,7 @@ public class FilmDetailBean {
     /**
      * 电影译名
      */
-    private String translated_term;
+    private String translatedTerm;
 
     /**
      * 电影名
@@ -55,7 +55,7 @@ public class FilmDetailBean {
     /**
      * 电影上映日期
      */
-    private String release_time;
+    private String releaseTime;
 
     /**
      * 豆瓣评分
