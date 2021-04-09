@@ -80,6 +80,7 @@ public class FilmService {
             searchParam.put("decade",decade);
         }
         searchParam.put("sort",param.get("sort"));
+        searchParam.put("keyword",param.get("keyword"));
         return searchParam;
     }
 

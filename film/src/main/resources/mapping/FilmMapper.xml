@@ -56,6 +56,9 @@
         WHERE
         1 = 1
         AND html.state = 1
+        <if test="keyword != null and !keyword != ''">
+            AND film.name LIKE CONCAT("%",#{keyword},"%") OR film.translated_term LIKE CONCAT("%",#{keyword},"%")
+        </if>
         <if test="genres != null and !genres.isEmpty()">
             AND film_category.category_id IN
             <foreach collection="genres" open="(" close=")" index="index" item="item" separator=",">
