@@ -121,4 +121,9 @@ public class FilmDetailBean {
      */
     private List<StarBean> starList = new ArrayList<>();
 
+    /**
+     * 奖项具体内容
+     */
+    private List<AwardBean> awardContentList = new ArrayList<>();
+
 }

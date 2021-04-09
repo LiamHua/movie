@@ -52,8 +52,4 @@ public class FilmController {
         return this.filmService.queryMovie(param);
     }
 
-    @RequestMapping(value = "queryFilmAward",method = RequestMethod.POST)
-    public  ResultMap queryFilmAward(@RequestParam Map<String, String> param){
-        return this.filmService.queryFilmAward(param);
-    }
 }
