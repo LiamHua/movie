@@ -52,6 +52,9 @@ public class FilmService {
      * @return 处理过后的搜索参数
      */
     public Map<String,Object> solveSearchParam(Map<String,String> param){
+        if (param == null || param.size() == 0){
+            return null;
+        }
         Map<String,Object> searchParam = new HashMap<>();
         //类别
         String genre = param.get("genres");
@@ -76,18 +79,7 @@ public class FilmService {
         if (!BaseUtil.isEmpty(decade)){
             searchParam.put("decade",decade);
         }
-        //顺序 例: 热度最高，评分最高，最多收藏，最近上映
-        String sort = "";
-        if (!BaseUtil.isEmpty(param.get("hot"))){
-            sort = "hot";
-        }else if (!BaseUtil.isEmpty(param.get("douban"))){
-            sort = "douban";
-        }else if (!BaseUtil.isEmpty(param.get("collect"))){
-            sort = "collect";
-        }else if (!BaseUtil.isEmpty(param.get("releaseDate"))){
-            sort = "release_time";
-        }
-        searchParam.put("sort",sort);
+        searchParam.put("sort",param.get("sort"));
         return searchParam;
     }
 
@@ -152,6 +144,12 @@ public class FilmService {
         String info = filmDetailBean.getInfo();
         info = info.replaceAll("<br/>","</p><p>");
         filmDetailBean.setInfo(info);
+        String category = filmDetailBean.getCategory().replaceAll(","," / ");
+        filmDetailBean.setCategory(category);
+        String area = filmDetailBean.getAreas().replaceAll(","," / ");
+        filmDetailBean.setAreas(area);
+        String translatedTerm = filmDetailBean.getTranslatedTerm().replaceAll("/"," / ");
+        filmDetailBean.setTranslatedTerm(translatedTerm);
         List<StarBean> directorList = this.filmMapper.queryFilmDirector(film_id);
         List<StarBean> scriptwriterList = this.filmMapper.queryFilmScriptwriter(film_id);
         List<StarBean> starList = this.filmMapper.queryFilmStar(film_id);
