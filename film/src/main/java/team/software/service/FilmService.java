@@ -144,45 +144,22 @@ public class FilmService {
             resultMap.setCode("500");
             return resultMap;
         }
-        FilmDetailBean bean = this.filmMapper.queryFilmDetail(param);
-        if (BaseUtil.isEmpty(bean)){
+        FilmDetailBean filmDetailBean = this.filmMapper.queryFilmDetail(param);
+        if (BaseUtil.isEmpty(filmDetailBean)){
             resultMap.setCode("500");
             return resultMap;
         }
-        String info = bean.getInfo();
+        String info = filmDetailBean.getInfo();
         info = info.replaceAll("<br/>","</p><p>");
-        bean.setInfo(info);
+        filmDetailBean.setInfo(info);
         List<StarBean> directorList = this.filmMapper.queryFilmDirector(film_id);
         List<StarBean> scriptwriterList = this.filmMapper.queryFilmScriptwriter(film_id);
         List<StarBean> starList = this.filmMapper.queryFilmStar(film_id);
-        bean.setDirectorList(directorList);
-        bean.setScriptwriterList(scriptwriterList);
-        bean.setStarList(starList);
-        if(!this.filmMapper.updateFilmHot(film_id)){
-            resultMap.setCode("500");
-            return resultMap;
-        }
-        resultMap.setCode("200");
-        resultMap.setMsg("请求成功");
-        resultMap.setData(bean);
-
-        return resultMap;
-    }
-
-    /**
-     * 查询电影获奖内容
-     * @param param 电影id
-     * @return 结果集
-     */
-    public ResultMap queryFilmAward(Map<String, String> param) {
-        String film_id = param.get("id");
-        ResultMap resultMap = new ResultMap();
-        if(BaseUtil.isEmpty(film_id)){
-            resultMap.setCode("500");
-            return resultMap;
-        }
+        filmDetailBean.setDirectorList(directorList);
+        filmDetailBean.setScriptwriterList(scriptwriterList);
+        filmDetailBean.setStarList(starList);
+        this.filmMapper.updateFilmHot(film_id);
         List<AwardBean> beanList = this.filmMapper.queryFilmAward(film_id);
-
         Map<String, List<String>> map = new HashMap<>();
         Map<String,AwardBean > dataMap = new HashMap<>();
         for (AwardBean bean : beanList){
@@ -205,9 +182,11 @@ public class FilmService {
             bean.setAwardContent(null);
             dataList.add(bean);
         }
+        filmDetailBean.setAwardContentList(dataList);
         resultMap.setCode("200");
         resultMap.setMsg("请求成功");
-        resultMap.setData(dataList);
+        resultMap.setData(filmDetailBean);
         return resultMap;
     }
+
 }
