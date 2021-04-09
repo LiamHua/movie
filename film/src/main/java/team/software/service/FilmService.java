@@ -145,11 +145,20 @@ public class FilmService {
         String info = filmDetailBean.getInfo();
         info = info.replaceAll("<br/>","</p><p>");
         filmDetailBean.setInfo(info);
-        String category = filmDetailBean.getCategory().replaceAll(","," / ");
+        String category = filmDetailBean.getCategory();
+        if (!BaseUtil.isEmpty(category)){
+            category = category.replaceAll(","," / ");
+        }
         filmDetailBean.setCategory(category);
-        String area = filmDetailBean.getAreas().replaceAll(","," / ");
+        String area = filmDetailBean.getAreas();
+        if (!BaseUtil.isEmpty(area)){
+            area = area.replaceAll(","," / ");
+        }
         filmDetailBean.setAreas(area);
-        String translatedTerm = filmDetailBean.getTranslatedTerm().replaceAll("/"," / ");
+        String translatedTerm = filmDetailBean.getTranslatedTerm();
+        if (!BaseUtil.isEmpty(translatedTerm)){
+            translatedTerm = translatedTerm.replaceAll(","," / ");
+        }
         filmDetailBean.setTranslatedTerm(translatedTerm);
         List<StarBean> directorList = this.filmMapper.queryFilmDirector(film_id);
         List<StarBean> scriptwriterList = this.filmMapper.queryFilmScriptwriter(film_id);
